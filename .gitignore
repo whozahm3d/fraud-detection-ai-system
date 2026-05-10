@@ -233,6 +233,56 @@ __pycache__/
 venv/
 
 # Marimo
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── Secrets — NEVER commit these ─────────────────────────────────────────────
+.env
+.env.txt
+.env.*
+.streamlit/secrets.toml
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ── Large data files (keep models/outputs but not raw datasets) ───────────────
+*.csv.gz
+*.parquet
+data/raw/
+data/interim/
+
+# ── ChromaDB is committed (needed for deployment) ────────────────────────────
+# chroma_db/   ← intentionally NOT ignored
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
 marimo/_static/
 marimo/_lsp/
 __marimo__/
