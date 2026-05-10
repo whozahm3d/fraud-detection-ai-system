@@ -216,16 +216,21 @@ PaySim - Synthetic Financial Dataset for Fraud Detection*.csv
 PaySim - Synthetic Financial Dataset for Fraud Detection*.zip
 *.tar.gz
 
-# Ignore ALL dataset files globally
-*.csv
+# Ignore only large/raw datasets
+Dataset/
 *.zip
-*.pkl
-*.joblib
+*.tar.gz
 
-# Ignore generated outputs
-outputs/
-data/
-datasets/
+# Ignore processed datasets only
+Data/processed/*.csv
+
+# Ignore cache/checkpoints
+.ipynb_checkpoints/
+__pycache__/
+
+# Ignore environments
+.env
+venv/
 
 # Marimo
 marimo/_static/
