@@ -205,12 +205,27 @@ cython_debug/
 PaySim - Synthetic Financial Dataset for Fraud Detection/*.csv
 PaySim - Synthetic Financial Dataset for Fraud Detection/*.zip
 processed_paysim/*.csv
+test_original/*.csv
+train_after_simulation/*.csv
+train_final_smote/*.csv
+train_original/*.csv
 
 # Large files
 processed_paysim*.csv
 PaySim - Synthetic Financial Dataset for Fraud Detection*.csv
 PaySim - Synthetic Financial Dataset for Fraud Detection*.zip
 *.tar.gz
+
+# Ignore ALL dataset files globally
+*.csv
+*.zip
+*.pkl
+*.joblib
+
+# Ignore generated outputs
+outputs/
+data/
+datasets/
 
 # Marimo
 marimo/_static/
