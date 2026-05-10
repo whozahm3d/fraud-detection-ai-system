@@ -8,3 +8,42 @@ notebook
 scipy
 tqdm
 joblib
+
+
+# TrustGuard — Fraud Analyst Dashboard
+# Deployment requirements for Streamlit Cloud
+# Python 3.10 recommended (Streamlit Cloud default as of 2026)
+
+# ── Core ─────────────────────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ── Data ─────────────────────────────────────────────────────────────────────
+pandas==2.2.3
+numpy==1.26.4
+
+# ── Visualisation ────────────────────────────────────────────────────────────
+matplotlib==3.9.4
+seaborn==0.13.2
+
+# ── Machine Learning ─────────────────────────────────────────────────────────
+scikit-learn==1.5.2
+xgboost==2.1.4
+imbalanced-learn==0.12.4
+joblib==1.4.2
+
+# ── XAI ──────────────────────────────────────────────────────────────────────
+# SHAP is tried first; if it fails at runtime the app falls back to
+# XGBoost built-in feature importances automatically.
+shap==0.46.0
+
+# ── RAG Pipeline ─────────────────────────────────────────────────────────────
+chromadb==0.5.23
+sentence-transformers==3.0.1
+rank-bm25==0.2.2
+openai>=1.30.0
+
+# ── Cross-encoder reranker (used inside rag_module.py) ───────────────────────
+# sentence-transformers above already covers CrossEncoder; no extra install needed.
+
+# ── System ───────────────────────────────────────────────────────────────────
+psutil==6.1.1
