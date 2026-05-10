@@ -1,0 +1,16 @@
+# NOTE:
+# This dataset file is intentionally not included in the repository due to large file size.
+# 
+# Dataset Name: PaySim Fraud Detection Dataset (Processed) as train_final_smote.csv
+#
+# To reproduce results:
+# 1. Download the original dataset from Kaggle or source.
+# 2. Run the pipeline notebook:
+#    deliverable_1_and_2_pipeline.ipynb
+#
+# This file was used during:
+# - Data preprocessing
+# - Feature engineering
+# - Model training & evaluation
+#
+# If needed, contact the repository owner for access.
