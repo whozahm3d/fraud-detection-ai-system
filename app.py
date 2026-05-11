@@ -926,7 +926,6 @@ elif page == " Model Performance":
     st.markdown("#### Saved Visualisations")
 
     plot_map = {
-        "Models Comparison of All Merics": "model_comparison_all_metrics.png",
         "ROC & PR Curves":           "roc_pr_curves.png",
         "Confusion Matrices":         "confusion_matrices_all_models.png",
         "Feature Importance":         "feature_importance_comparison.png",
