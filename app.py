@@ -35,8 +35,8 @@ def _patch_rag_module():
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="TrustGuard · Fraud Analyst Dashboard",
-    page_icon="🛡️",
+    page_title="TrustGuard AI · Fraud Detection Dashboard",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -324,16 +324,16 @@ def predict_transaction(model, scaler, row: dict, threshold: float = 0.5):
 # SIDEBAR
 # ─────────────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🛡️ TrustGuard")
-    st.markdown("**Fraud Analyst Dashboard**")
+    st.markdown("## TrustGuard AI")
+    st.markdown("**Fraud Detection Dashboard**")
     st.markdown("---")
 
     page = st.radio("Navigate", [
-        "🔍 Predict Transaction",
-        "📂 Batch CSV Analysis",
-        "📊 Model Performance",
-        "🔬 Ablation Study",
-        "ℹ️ About"
+        " Predict Transaction",
+        " Batch CSV Analysis",
+        " Model Performance",
+        " Ablation Study",
+        " About"
     ])
 
     st.markdown("---")
@@ -362,7 +362,7 @@ with st.sidebar:
 st.markdown("""
 <div class="topbar">
     <div>
-        <h1>🛡️ TrustGuard — Fraud Analyst Dashboard</h1>
+        <h1> TrustGuard AI — Fraud Detection Dashboard</h1>
         <span>AI-powered fraud detection with XAI explainability & SBP regulatory justification</span>
     </div>
 </div>
@@ -371,10 +371,10 @@ st.markdown("""
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 1 — PREDICT TRANSACTION
 # ─────────────────────────────────────────────────────────────────────────────
-if page == "🔍 Predict Transaction":
+if page == " Predict Transaction":
     model, scaler, meta = load_deployment_model()
 
-    st.markdown("### 🔍 Predict a Single Transaction")
+    st.markdown("###  Predict a Single Transaction")
     st.markdown("Enter transaction details manually to get an instant fraud verdict with XAI + regulatory justification.")
 
     col_left, col_right = st.columns([1, 1], gap="large")
@@ -433,7 +433,7 @@ if page == "🔍 Predict Transaction":
         st.dataframe(preview_df, use_container_width=True, hide_index=True, height=280)
 
     st.markdown("---")
-    run_btn = st.button("🚀 Run Fraud Analysis", type="primary", use_container_width=True)
+    run_btn = st.button(" Run Fraud Analysis", type="primary", use_container_width=True)
 
     if run_btn:
         with st.spinner("Running inference…"):
@@ -454,7 +454,7 @@ if page == "🔍 Predict Transaction":
                 </div>
             </div>""", unsafe_allow_html=True)
         with r2:
-            verdict = "⛔ FRAUD" if is_fraud else "✅ LEGITIMATE"
+            verdict = "⛔ FRAUD" if is_fraud else " LEGITIMATE"
             v_color = "#DC2626" if is_fraud else "#16A34A"
             st.markdown(f"""
             <div class="tg-card {card_class}">
@@ -489,52 +489,69 @@ if page == "🔍 Predict Transaction":
 
         # ── XAI + RAG side-by-side ────────────────────────────────────────
         st.markdown("---")
-        st.markdown("### 📊 XAI Heatmap  +  Regulatory Justification")
+        st.markdown("###  XAI Heatmap  +  Regulatory Justification")
         xai_col, rag_col = st.columns([1, 1], gap="large")
 
+        # XAI — always runs, no key needed
         with xai_col:
-            st.markdown('<div class="section-title">🧠 Explainability Heatmap</div>',
+            st.markdown('<div class="section-title"> Explainability Heatmap</div>',
                         unsafe_allow_html=True)
-            with st.spinner("Generating XAI…"):
+            with st.spinner("Generating SHAP explanation…"):
                 xai_fig, xai_method = build_xai_figure(model, X_scaled, FEATURES, threshold)
             st.pyplot(xai_fig, use_container_width=True)
             st.caption(f"Method: **{xai_method}**")
             plt.close(xai_fig)
 
+        # RAG — shows report or a clean placeholder
         with rag_col:
-            st.markdown('<div class="section-title">📜 SBP Regulatory Report</div>',
-                        unsafe_allow_html=True)
-            openai_key = get_openai_key()
-            if not openai_key:
-                st.warning("No OpenAI API key — RAG skipped. Add key in sidebar or Streamlit Secrets.")
-            else:
-                with st.spinner("Querying SBP regulatory knowledge base…"):
-                    try:
-                        rag_mod = _patch_rag_module()
-                        rag_result = rag_mod.rag_pipeline_for_streamlit(
-                            fraud_probability=prob,
-                            features=row,
-                            transaction_id=tx_id or "TXN-STREAMLIT",
-                            openai_api_key=openai_key,
-                        )
-                        st.markdown(f"""
-                        <div class="tg-card">
-                            <b>Transaction:</b> {rag_result.transaction_id} &nbsp;
-                            {risk_badge(rag_result.risk_tier)}<br/>
-                            <b>Fraud Prob:</b> {rag_result.fraud_probability:.1%} &nbsp;|&nbsp;
-                            <b>Grounding:</b> {rag_result.grounding_score:.0%} &nbsp;|&nbsp;
-                            <b>Latency:</b> {rag_result.latency_seconds:.1f}s
-                        </div>""", unsafe_allow_html=True)
-                        st.markdown(rag_result.response_text)
+        st.markdown('<div class="section-title"> SBP Regulatory Report</div>',
+                    unsafe_allow_html=True)
+        openai_key = get_openai_key()
+            
+        if not openai_key:
+            # Graceful placeholder — dashboard layout stays intact
+            st.markdown(f"""
+            <div class="tg-card tg-card-warning">
+                <b>Transaction:</b> {tx_id} &nbsp; {risk_badge(get_risk_tier(prob))}<br/>
+                <b>Fraud Probability:</b> {prob:.1%}<br/><br/>
+                <b>RAG regulatory report unavailable.</b><br/>
+                Add your OpenAI API key in the sidebar or Streamlit Secrets to enable
+                SBP-grounded justification for this transaction.
+            </div>
+            """, unsafe_allow_html=True)
 
-                        if rag_result.sources:
-                            with st.expander("📚 Retrieved SBP Sources"):
-                                for s in rag_result.sources:
-                                    st.markdown(f"- {s}")
-
-                    except Exception as e:
-                        st.error(f"RAG error: {e}")
-                        st.info("Check OpenAI key validity and ChromaDB path.")
+            # Still show risk context without RAG
+            st.info(
+                f"**Risk Tier: {get_risk_tier(prob)}** — "
+                f"{'High fraud probability. Manual review recommended.' if prob >= 0.65 else 'Monitor for suspicious pattern escalation.'}"
+            )
+        else:
+            with st.spinner("Querying SBP regulatory knowledge base…"):
+                try:
+                    rag_mod = _patch_rag_module()
+                    rag_result = rag_mod.rag_pipeline_for_streamlit(
+                        fraud_probability=prob,
+                        features=row,
+                        transaction_id=tx_id or "TXN-STREAMLIT",
+                        openai_api_key=openai_key,
+                    )
+                    st.markdown(f"""
+                    <div class="tg-card">
+                        <b>Transaction:</b> {rag_result.transaction_id} &nbsp;
+                        {risk_badge(rag_result.risk_tier)}<br/>
+                        <b>Fraud Prob:</b> {rag_result.fraud_probability:.1%} &nbsp;|&nbsp;
+                        <b>Grounding:</b> {rag_result.grounding_score:.0%} &nbsp;|&nbsp;
+                        <b>Latency:</b> {rag_result.latency_seconds:.1f}s
+                    </div>""", unsafe_allow_html=True)
+                    st.markdown(rag_result.response_text)
+                    
+                    if rag_result.sources:
+                        with st.expander(" Retrieved SBP Sources"):
+                            for s in rag_result.sources:
+                                st.markdown(f"- {s}")
+                except Exception as e:
+                    st.error(f"RAG error: {e}")
+                    st.info("Check OpenAI key validity and ChromaDB path.")
 
         # ── Probability bar ───────────────────────────────────────────────
         st.markdown("---")
