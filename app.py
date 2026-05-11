@@ -221,7 +221,10 @@ def build_xai_figure(model, X_scaled: np.ndarray, feature_names: list, threshold
     """
     # ── Try SHAP ──────────────────────────────────────────────────────────
     try:
-        import shap
+        import shap, numpy as np
+        # SHAP 0.43+ API:
+        masker = shap.maskers.Independent(X_scaled, max_samples=50)
+        explainer = shap.Explainer(model, masker)
         # Use TreeExplainer only for tree models (fast, low-memory)
         model_type = type(model).__name__
         if "XGB" in model_type or "GBM" in model_type:
@@ -567,17 +570,19 @@ if page == "🔍 Predict Transaction":
         )
 
         # Save XAI figure for download
+        # Save figure to buffer once, reuse for both display and download:
         xai_buf = io.BytesIO()
-        xai_fig2, _, = build_xai_figure(model, X_scaled, FEATURES, threshold)
-        xai_fig2.savefig(xai_buf, format="png", dpi=150, bbox_inches="tight")
+        xai_fig, xai_method = build_xai_figure(model, X_scaled, FEATURES)
+        xai_fig.savefig(xai_buf, format="png", dpi=150, bbox_inches="tight")
         xai_buf.seek(0)
-        plt.close(xai_fig2)
+        st.pyplot(xai_fig, use_container_width=True)      # display
         st.download_button(
             "⬇️ Download XAI Chart (.png)",
-            data=xai_buf,
+            xai_buf,
             file_name=f"trustguard_xai_{tx_id}.png",
             mime="image/png",
         )
+        plt.close(xai_fig)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 2 — BATCH CSV ANALYSIS
