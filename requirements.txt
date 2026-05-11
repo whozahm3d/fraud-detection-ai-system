@@ -1,16 +1,16 @@
 # TrustGuard — Fraud Analyst Dashboard
-# Streamlit Cloud Deployment Ready
+# Stable Production / Streamlit Cloud Requirements
 # Python 3.10+
 
-# ── Core ──────────────────────────────────────────────────────────────────────
+# ── Core App ───────────────────────────────────────────────────────────────────
 streamlit==1.45.0
 
-# ── Data ──────────────────────────────────────────────────────────────────────
+# ── Data Stack (stable baseline) ──────────────────────────────────────────────
+numpy==1.26.4
 pandas==2.2.3
-numpy>=1.26.4,<2.0
 scipy==1.13.1
 
-# ── Visualisation ─────────────────────────────────────────────────────────────
+# ── Visualization ─────────────────────────────────────────────────────────────
 matplotlib==3.9.4
 seaborn==0.13.2
 
@@ -19,6 +19,7 @@ scikit-learn==1.5.2
 xgboost==2.1.4
 imbalanced-learn==0.12.4
 joblib==1.4.2
+numba==0.60.0
 
 # ── Explainability (XAI) ──────────────────────────────────────────────────────
 shap>=0.45.0,<0.48.0
@@ -29,10 +30,12 @@ sentence-transformers==3.0.1
 rank-bm25==0.2.2
 openai>=1.30.0,<2.0.0
 
-# ── Compatibility Fixes ───────────────────────────────────────────────────────
-protobuf>=6.31.1,<8.0.0
-pydantic<3
+# ── Compatibility Layer ───────────────────────────────────────────────────────
+protobuf<6
 
-# ── System ────────────────────────────────────────────────────────────────────
+# ── System Utilities ──────────────────────────────────────────────────────────
 psutil==6.1.1
 tqdm==4.66.4
+
+# ── Streamlit compatibility fix ───────────────────────────────────────────────
+rich<14
