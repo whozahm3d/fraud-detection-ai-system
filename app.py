@@ -931,6 +931,7 @@ elif page == " Model Performance":
         "Feature Importance":         "feature_importance_comparison.png",
         "Fraud Probability Dist.":    "fraud_prob_distribution_all_models.png",
         "Cost-Benefit Analysis":      "cost_benefit_analysis.png",
+        "Models Comparison of All Merics":    "model_comparison_all_metrics.png",
         "Classification Report Heatmap": "classification_report_heatmap.png",
         "Model Metrics Lineplot":     "model_metrics_lineplot.png",
         "Models Comparison Heatmap":  "models_comparison_heatmap.png",
