@@ -528,42 +528,9 @@ if page == " Predict Transaction":
                             with st.expander(" Retrieved SBP Sources"):
                                 for s in rag_result.sources:
                                     st.markdown(f"- {s}")
-                    except Exception as e:
+                     except Exception as e:
                         st.error(f"RAG error: {e}")
                         st.info("Check OpenAI key validity and ChromaDB path.")
-
-            # Still show risk context without RAG
-            st.info(
-                f"**Risk Tier: {get_risk_tier(prob)}** — "
-                f"{'High fraud probability. Manual review recommended.' if prob >= 0.65 else 'Monitor for suspicious pattern escalation.'}"
-            )
-        else:
-            with st.spinner("Querying SBP regulatory knowledge base…"):
-                try:
-                    rag_mod = _patch_rag_module()
-                    rag_result = rag_mod.rag_pipeline_for_streamlit(
-                        fraud_probability=prob,
-                        features=row,
-                        transaction_id=tx_id or "TXN-STREAMLIT",
-                        openai_api_key=openai_key,
-                    )
-                    st.markdown(f"""
-                    <div class="tg-card">
-                        <b>Transaction:</b> {rag_result.transaction_id} &nbsp;
-                        {risk_badge(rag_result.risk_tier)}<br/>
-                        <b>Fraud Prob:</b> {rag_result.fraud_probability:.1%} &nbsp;|&nbsp;
-                        <b>Grounding:</b> {rag_result.grounding_score:.0%} &nbsp;|&nbsp;
-                        <b>Latency:</b> {rag_result.latency_seconds:.1f}s
-                    </div>""", unsafe_allow_html=True)
-                    st.markdown(rag_result.response_text)
-                    
-                    if rag_result.sources:
-                        with st.expander(" Retrieved SBP Sources"):
-                            for s in rag_result.sources:
-                                st.markdown(f"- {s}")
-                except Exception as e:
-                    st.error(f"RAG error: {e}")
-                    st.info("Check OpenAI key validity and ChromaDB path.")
 
         # ── Probability bar ───────────────────────────────────────────────
         st.markdown("---")
