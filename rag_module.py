@@ -24,17 +24,6 @@ RAG_CONFIG = {
 
 RISK_TIERS = {"CRITICAL": (0.85, 1.01), "HIGH": (0.65, 0.85), "MEDIUM": (0.50, 0.65)}
 
-# Add @st.cache_resource in app.py to pre-load on startup:
-@st.cache_resource(show_spinner="Loading embedding models...")
-def load_embedding_models():
-    from sentence_transformers import SentenceTransformer, CrossEncoder
-    em = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-    try: re = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-    except: re = None
-    return em, re
-
-# OR: commit model weights to outputs/models/embeddings/ and load locally
-
 def get_risk_tier(prob):
     for tier, (lo, hi) in RISK_TIERS.items():
         if lo <= prob < hi:
@@ -67,7 +56,6 @@ class StreamlitRAGResult:
 _components = {}
 
 def load_rag_components(openai_api_key=None):
-    def load_rag_components(openai_api_key=None):
     global _components
     if openai_api_key:
         os.environ["OPENAI_API_KEY"] = openai_api_key
