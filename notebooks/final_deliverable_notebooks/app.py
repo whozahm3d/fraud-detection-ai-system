@@ -22,8 +22,7 @@ import rag_module as _rm   # no patching needed
 warnings.filterwarnings("ignore")
 
 # ── Resolve project root so relative imports work on Streamlit Cloud ──────────
-# app.py lives at notebooks/final_deliverable_notebooks/
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
 # ── Patch rag_module's hard-coded Windows path BEFORE importing it ────────────
