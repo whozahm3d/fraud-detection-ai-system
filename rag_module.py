@@ -56,8 +56,18 @@ class StreamlitRAGResult:
 _components = {}
 
 def load_rag_components(openai_api_key=None):
+    def load_rag_components(openai_api_key=None):
     global _components
-    if _components:
+    if openai_api_key:
+        os.environ["OPENAI_API_KEY"] = openai_api_key
+        # Rebuild client if key changed
+        if _components:
+            _components["client"] = openai.OpenAI(
+                api_key=openai_api_key)
+            return _components
+    elif _components:
+        return _components
+    elif _components:
         return _components
     if openai_api_key:
         os.environ["OPENAI_API_KEY"] = openai_api_key
