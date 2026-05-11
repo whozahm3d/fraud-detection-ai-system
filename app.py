@@ -16,8 +16,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import streamlit as st
-# In app.py — simplified now that rag_module resolves its own path
-import rag_module as _rm   # no patching needed
 
 warnings.filterwarnings("ignore")
 
@@ -25,13 +23,12 @@ warnings.filterwarnings("ignore")
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
-# ── Patch rag_module's hard-coded Windows path BEFORE importing it ────────────
-import importlib, types
+# ── Import and patch rag_module AFTER ROOT is defined ─────────────────────────
+import rag_module as _rm
+_rm.RAG_CONFIG["CHROMA_DB_PATH"] = os.path.join(ROOT, "chroma_db")
 
 def _patch_rag_module():
-    """Load rag_module but override CHROMA_DB_PATH to a relative path."""
-    import rag_module as _rm
-    _rm.RAG_CONFIG["CHROMA_DB_PATH"] = os.path.join(ROOT, "chroma_db")
+    """Returns the already-patched rag_module instance."""
     return _rm
 
 # ─────────────────────────────────────────────────────────────────────────────
