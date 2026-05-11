@@ -501,24 +501,36 @@ if page == " Predict Transaction":
             st.pyplot(xai_fig, use_container_width=True)
             st.caption(f"Method: **{xai_method}**")
             plt.close(xai_fig)
+            
+            st.markdown("---")
 
         # RAG — shows report or a clean placeholder
         with rag_col:
-            st.markdown('<div class="section-title"> SBP Regulatory Report</div>',
-                    unsafe_allow_html=True)
-        openai_key = get_openai_key()
-            
-        if not openai_key:
-            # Graceful placeholder — dashboard layout stays intact
-            st.markdown(f"""
-            <div class="tg-card tg-card-warning">
-                <b>Transaction:</b> {tx_id} &nbsp; {risk_badge(get_risk_tier(prob))}<br/>
-                <b>Fraud Probability:</b> {prob:.1%}<br/><br/>
-                <b>RAG regulatory report unavailable.</b><br/>
-                Add your OpenAI API key in the sidebar or Streamlit Secrets to enable
-                SBP-grounded justification for this transaction.
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('<div class="section-title">📜 SBP Regulatory Report</div>',
+                        unsafe_allow_html=True)
+            openai_key = get_openai_key()
+            if not openai_key:
+                st.warning("No OpenAI API key — RAG skipped.")
+            else:
+                with st.spinner("Querying SBP regulatory knowledge base…"):
+                    try:
+                        rag_mod = _patch_rag_module()
+                        rag_result = rag_mod.rag_pipeline_for_streamlit(
+                            fraud_probability=prob,
+                            features=row,
+                            transaction_id=tx_id or "TXN-STREAMLIT",
+                            openai_api_key=openai_key,
+                            embed_model=embed_model,
+                            reranker=reranker,
+                        )
+                        st.markdown(rag_result.response_text)
+                        if rag_result.sources:
+                            with st.expander(" Retrieved SBP Sources"):
+                                for s in rag_result.sources:
+                                    st.markdown(f"- {s}")
+                    except Exception as e:
+                        st.error(f"RAG error: {e}")
+                        st.info("Check OpenAI key validity and ChromaDB path.")
 
             # Still show risk context without RAG
             st.info(
@@ -594,6 +606,8 @@ if page == " Predict Transaction":
             *[f"  {FEATURE_LABELS.get(k,k):35s}: {row[k]:>12.4f}" for k in FEATURES],
         ]
         report_text = "\n".join(report_lines)
+        # Preview before download
+        st.code(report_text, language=None)
         st.download_button(
             "⬇️ Download Report (.txt)",
             data=report_text,
