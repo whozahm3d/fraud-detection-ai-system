@@ -942,8 +942,7 @@ elif page == " Model Performance":
         if os.path.exists(fpath):
             with cols[i % 2]:
                 st.markdown(f"**{title}**")
-                show_img(fpath)
-                #st.image(Image.open(fpath), use_container_width=True)
+                st.image(Image.open(fpath), use_container_width=True)
 
     # XGBoost metrics detail
     xgb_path = os.path.join(METRICS_DIR, "xgboost_metrics.json")
@@ -962,7 +961,7 @@ elif page == " Model Performance":
 # PAGE 5 — ABLATION STUDY
 # ─────────────────────────────────────────────────────────────────────────────
 elif page == " Ablation Study":
-    st.markdown("### 🔬 Ablation Study")
+    st.markdown("###  Ablation Study")
     st.markdown("Component-level analysis of the pipeline — showing which parts contribute most.")
 
     ab_df = load_ablation()
