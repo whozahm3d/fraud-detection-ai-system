@@ -921,7 +921,7 @@ elif page == " Model Performance":
         plt.tight_layout()
         # AFTER
         plt.tight_layout()
-        col_chart_l, col_chart_r = st.columns(2)
+        col_chart_l, col_chart_r = st.columns(1)
         with col_chart_l:
             st.pyplot(fig_b, use_container_width=True)
             plt.close(fig_b)
