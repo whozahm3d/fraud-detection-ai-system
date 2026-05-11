@@ -741,7 +741,7 @@ elif page == " Batch CSV Analysis":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 3 — BATCH CSV ANALYSIS
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == " Data & Imbalance":
+elif page == " Dataset & Imbalance":
     st.markdown("###  Data Overview & Imbalance Handling")
 
     PLOTS = "outputs/plots"
