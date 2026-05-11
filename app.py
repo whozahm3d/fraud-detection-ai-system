@@ -537,7 +537,7 @@ if page == "🔍 Predict Transaction":
         ax_g.set_xlabel("Probability", fontsize=9)
         ax_g.text(threshold + 0.01, 0, f"threshold {threshold:.0%}", fontsize=8,
                   va="center", color="#263D5B")
-        ha = "left" if prob < 0.75 else "right"p
+        ha = "left" if prob < 0.75 else "right"
         ax_g.text(min(prob, 0.95), 0, f" {prob:.1%}", ha=ha, fontsize=9, va="center",
                   color="white" if prob > 0.4 else "#263D5B", fontweight="bold")
         for sp in ax_g.spines.values(): sp.set_visible(False)
@@ -825,8 +825,8 @@ elif page == "🔬 Ablation Study":
         axes[1].barh(ab_df["Condition"], ab_df["Test AUC"], color=pal,
                      edgecolor="white", linewidth=0.6)
         axes[1].set_title("Test AUC by Condition", fontsize=10, color="#263D5B", fontweight="bold")
-        min_auc = ab_df["Test AUC"].min(
-        axes[1].set_xlim(max(0, min_auc - 0,01), 1.002)
+        min_auc = ab_df["Test AUC"].min()
+        axes[1].set_xlim(max(0, min_auc - 0.01), 1.002)
         axes[1].tick_params(labelsize=7, colors="#263D5B")
         for sp in axes[1].spines.values(): sp.set_visible(False)
 
