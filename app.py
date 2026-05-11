@@ -504,7 +504,7 @@ if page == " Predict Transaction":
 
         # RAG — shows report or a clean placeholder
         with rag_col:
-        st.markdown('<div class="section-title"> SBP Regulatory Report</div>',
+            st.markdown('<div class="section-title"> SBP Regulatory Report</div>',
                     unsafe_allow_html=True)
         openai_key = get_openai_key()
             
