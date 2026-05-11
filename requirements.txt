@@ -19,7 +19,6 @@ scikit-learn==1.5.2
 xgboost==2.1.4
 imbalanced-learn==0.12.4
 joblib==1.4.2
-numba==0.60.0
 
 # ── Explainability (XAI) ──────────────────────────────────────────────────────
 shap>=0.45.0,<0.48.0
