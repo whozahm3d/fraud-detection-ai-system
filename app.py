@@ -919,20 +919,14 @@ elif page == " Model Performance":
         ax_b.tick_params(colors="#263D5B", labelsize=9)
         for sp in ax_b.spines.values(): sp.set_visible(False)
         plt.tight_layout()
-        # AFTER
-        plt.tight_layout()
-        col_chart_l, col_chart_r = st.columns(1)
-        with col_chart_l:
-            st.pyplot(fig_b, use_container_width=True)
-            plt.close(fig_b)
-        with col_chart_r:
-            st.markdown("**Models Comparison of All Metrics**")
-            show_img(os.path.join(PLOTS_DIR, "model_comparison_all_metrics.png"))
+        st.pyplot(fig_b, use_container_width=True)
+        plt.close(fig_b)
 
     st.markdown("---")
     st.markdown("#### Saved Visualisations")
 
     plot_map = {
+        "Models Comparison of All Merics": "model_comparison_all_metrics.png",
         "ROC & PR Curves":           "roc_pr_curves.png",
         "Confusion Matrices":         "confusion_matrices_all_models.png",
         "Feature Importance":         "feature_importance_comparison.png",
@@ -941,7 +935,6 @@ elif page == " Model Performance":
         "Classification Report Heatmap": "classification_report_heatmap.png",
         "Model Metrics Lineplot":     "model_metrics_lineplot.png",
         "Models Comparison Heatmap":  "models_comparison_heatmap.png",
-        "Models Comparison of All Merics": "model_comparison_all_metrics.png",
     }
     cols = st.columns(2)
     for i, (title, fname) in enumerate(plot_map.items()):
