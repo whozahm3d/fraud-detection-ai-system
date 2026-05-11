@@ -72,7 +72,11 @@ def load_rag_components(openai_api_key=None):
         os.environ["OPENAI_API_KEY"] = openai_api_key
     embed_model   = SentenceTransformer(RAG_CONFIG["EMBEDDING_MODEL"])
     chroma_client = chromadb.PersistentClient(path=RAG_CONFIG["CHROMA_DB_PATH"])
-    collection    = chroma_client.get_collection(RAG_CONFIG["COLLECTION_NAME"])
+    # AFTER
+    collection = chroma_client.get_collection(
+        name=RAG_CONFIG["COLLECTION_NAME"],
+        embedding_function=None   # we handle embeddings ourselves — skip deserialization
+    )
     client        = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY", ""))
     all_data      = collection.get(include=["documents", "metadatas"])
     texts         = all_data["documents"]
