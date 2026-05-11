@@ -38,7 +38,7 @@ def decode_tx_type(features):
     return "CASH_IN"
 
 def _tokenize(text):
-    return re.findall(r"[a-z0-9/\-]+", text.lower()) or ["<empty>"]
+    return re.findall(r"\b[a-z0-9/\-]+\b", text.lower()) or ["<empty>"]
 
 @dataclass
 class StreamlitRAGResult:
