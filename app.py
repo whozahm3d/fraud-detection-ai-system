@@ -853,8 +853,8 @@ elif page == " Data & Imbalance":
     st.markdown("**Pipeline stages — fraud ratio at each step:**")
     s1, s2, s3 = st.columns(3)
     s1.metric("① Original Train Split", "~0.13%", help="Raw PaySim fraud rate")
-    s2.metric("② After Fraud Simulation", "~0.26%", help="5% of TRANSFER/CASH_OUT injected as fraud")
-    s3.metric("③ After SMOTE (Final Train)", "~23%", help="sampling_strategy=0.3 applied on augmented set")
+    s2.metric("② After Fraud Simulation", "~1.26%", help="5% of TRANSFER/CASH_OUT injected as fraud")
+    s3.metric("③ After SMOTE (Final Train)", "~23.07%", help="sampling_strategy=0.3 applied on augmented set")
 
     st.image(os.path.join(PLOTS, "outputs/ablation/ablation_smote_trend.png"), 
              caption="Ablation B — AUPRC, Recall, Precision vs SMOTE ratio (0.0 vs 0.3 vs 0.5)",
