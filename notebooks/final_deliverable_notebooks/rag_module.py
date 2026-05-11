@@ -7,8 +7,12 @@ from sentence_transformers import SentenceTransformer, CrossEncoder
 from rank_bm25 import BM25Okapi
 import openai
 
+# Resolve chroma_db relative to project root (2 levels up from this file's location)
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(_HERE))
+
 RAG_CONFIG = {
-    "CHROMA_DB_PATH"  : r"C:\Users\pakistan\OneDrive\Desktop\ai_project\chroma_db",
+    "CHROMA_DB_PATH"  : os.path.join(_PROJECT_ROOT, "chroma_db"),
     "COLLECTION_NAME" : "sbp_regulations",
     "EMBEDDING_MODEL" : "sentence-transformers/all-MiniLM-L6-v2",
     "OPENAI_MODEL"    : "gpt-4o-mini",
