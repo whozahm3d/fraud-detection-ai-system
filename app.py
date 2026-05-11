@@ -925,6 +925,7 @@ elif page == " Model Performance":
         "Classification Report Heatmap": "classification_report_heatmap.png",
         "Model Metrics Lineplot":     "model_metrics_lineplot.png",
         "Models Comparison Heatmap":  "models_comparison_heatmap.png",
+        "Models Comparison of All Merics": "model_comparison_all_metrics",
     }
     cols = st.columns(2)
     for i, (title, fname) in enumerate(plot_map.items()):
