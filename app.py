@@ -154,6 +154,17 @@ RISK_COLORS = {
 # ─────────────────────────────────────────────────────────────────────────────
 # HELPERS — LOAD ARTEFACTS
 # ─────────────────────────────────────────────────────────────────────────────
+# Add @st.cache_resource in app.py to pre-load on startup:
+
+@st.cache_resource(show_spinner="Loading embedding models...")
+def load_embedding_models():
+    from sentence_transformers import SentenceTransformer, CrossEncoder
+    em = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    try: re = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    except: re = None
+    return em, re
+# OR: commit model weights to outputs/models/embeddings/ and load locally
+
 @st.cache_resource(show_spinner="Loading model artefacts…")
 def load_deployment_model():
     import joblib
@@ -265,7 +276,7 @@ def build_xai_figure(model, X_scaled: np.ndarray, feature_names: list, threshold
                     fontsize=7, color="#263D5B")
 
         plt.tight_layout()
-        return fig, method, "SHAP (TreeExplainer)"
+        return fig, "SHAP (TreeExplainer)"
 
     except Exception:
         plt.close("all")  # clean up on failure
@@ -589,7 +600,7 @@ if page == "🔍 Predict Transaction":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 2 — BATCH CSV ANALYSIS
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == " Batch CSV Analysis":
+elif page == "📂 Batch CSV Analysis":
     model, scaler, meta = load_deployment_model()
 
     st.markdown("### 📂 Batch Transaction Analysis")
@@ -648,6 +659,7 @@ elif page == " Batch CSV Analysis":
                 ))[:,1]
                 for i in range(0, len(df_prep), CHUNK)
             ])
+            preds = (probs >= threshold).astype(int)   # add this
 
         df_out = raw.copy()
         df_out["fraud_probability"] = np.round(probs, 4)
