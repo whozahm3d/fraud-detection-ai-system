@@ -624,15 +624,6 @@ elif page == "📂 Batch CSV Analysis":
         with st.expander("Preview raw data (first 5 rows)"):
             st.dataframe(raw.head(), use_container_width=True)
 
-        # Process in chunks for very large files:
-        CHUNK = 50_000
-        probs = np.concatenate([
-            model.predict_proba(scaler.transform(
-                df_prep[FEATURES].iloc[i:i+CHUNK].values.astype(float)
-            ))[:,1]
-            for i in range(0, len(df_prep), CHUNK)
-        ])
-
         # Feature engineering
         def prep_batch(df):
             d = df.copy()
@@ -647,10 +638,14 @@ elif page == "📂 Batch CSV Analysis":
 
         with st.spinner("Running batch inference…"):
             df_prep = prep_batch(raw)
-            X = df_prep[FEATURES].values.astype(float)
-            X_s = scaler.transform(X)
-            probs  = model.predict_proba(X_s)[:, 1]
-            preds  = (probs >= threshold).astype(int)
+             # Process in chunks for very large files:
+            CHUNK = 50_000
+            probs = np.concatenate([
+                model.predict_proba(scaler.transform(
+                    df_prep[FEATURES].iloc[i:i+CHUNK].values.astype(float)
+                ))[:,1]
+                for i in range(0, len(df_prep), CHUNK)
+            ])
 
         df_out = raw.copy()
         df_out["fraud_probability"] = np.round(probs, 4)
