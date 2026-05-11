@@ -2,7 +2,7 @@ Transaction  : TXN-MEDIUM-001
 Fraud Prob   : 73.0%
 Risk Tier    : HIGH
 Grounding    : 0.00
-Latency      : 2.8s
+Latency      : 3.6s
 
 ERROR: OpenAI rate limit reached. Wait and retry.
 

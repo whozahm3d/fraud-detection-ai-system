@@ -2,7 +2,7 @@ Transaction  : TXN-HIGH-002
 Fraud Prob   : 88.0%
 Risk Tier    : CRITICAL
 Grounding    : 0.00
-Latency      : 2.7s
+Latency      : 3.4s
 
 ERROR: OpenAI rate limit reached. Wait and retry.
 
