@@ -528,7 +528,7 @@ if page == " Predict Transaction":
                             with st.expander(" Retrieved SBP Sources"):
                                 for s in rag_result.sources:
                                     st.markdown(f"- {s}")
-                     except Exception as e:
+                    except Exception as e:
                         st.error(f"RAG error: {e}")
                         st.info("Check OpenAI key validity and ChromaDB path.")
 
