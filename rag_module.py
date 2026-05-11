@@ -93,8 +93,13 @@ def load_rag_components(openai_api_key=None):
     }
     return _components
 
-def rag_pipeline_for_streamlit(fraud_probability, features, transaction_id="TXN-STREAMLIT", openai_api_key=None):
+def rag_pipeline_for_streamlit(fraud_probability, features, transaction_id="TXN-STREAMLIT", openai_api_key=None, embed_model=None, reranker=None):
     comp        = load_rag_components(openai_api_key)
+    # Override with pre-cached models if passed in
+    if embed_model is not None:
+        comp["embed_model"] = embed_model
+    if reranker is not None:
+        comp["reranker"] = reranker
     embed_model = comp["embed_model"]
     collection  = comp["collection"]
     client      = comp["client"]
