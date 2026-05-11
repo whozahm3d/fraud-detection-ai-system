@@ -739,14 +739,14 @@ elif page == " Batch CSV Analysis":
                            use_container_width=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PAGE 3 — BATCH CSV ANALYSIS
+# PAGE 6 — DATA & IMBALANCE
 # ─────────────────────────────────────────────────────────────────────────────
 elif page == " Dataset & Imbalance":
     st.markdown("###  Data Overview & Imbalance Handling")
-
+ 
     PLOTS = "outputs/plots"
-
-    # ── Section 1: Dataset Summary ──────────────────────────────────────
+ 
+    # ── Section 1: Dataset Summary ───────────────────────────────────────────
     st.markdown("####  Dataset at a Glance")
     st.markdown("""
     <div class="tg-card">
@@ -756,20 +756,25 @@ elif page == " Dataset & Imbalance":
     ratio features. The dataset is severely imbalanced: <b>only ~0.13% of transactions are fraudulent</b>.
     </div>
     """, unsafe_allow_html=True)
-
+ 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Transactions", "6,362,620")
     c2.metric("Fraud Cases", "8,213")
     c3.metric("Fraud Rate", "0.13%")
     c4.metric("Features", "18")
-
+ 
     st.markdown("---")
-
-    # ── Section 2: EDA Visualizations ───────────────────────────────────
+ 
+    # ── Section 2: EDA Visualizations ────────────────────────────────────────
     st.markdown("####  Exploratory Data Analysis")
-
-    tab1, tab2, tab3, tab4 = st.tabs(["Transaction Types", "Amount Distributions", "Correlations", "Fraud Patterns"])
-
+ 
+    ABLATION = "outputs/ablation"
+ 
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "Transaction Types", "Amount Distributions",
+        "Correlations & Heatmap", "Fraud Patterns", "Feature Importance"
+    ])
+ 
     with tab1:
         c1, c2 = st.columns(2)
         with c1:
@@ -778,8 +783,9 @@ elif page == " Dataset & Imbalance":
         with c2:
             st.markdown("**Fraud by Transaction Type**")
             st.image(os.path.join(PLOTS, "fraud_by_transaction_type.png"), use_container_width=True)
+        st.markdown("**Detailed Fraud by Type**")
         st.image(os.path.join(PLOTS, "fraud_by_type_detailed.png"), use_container_width=True)
-
+ 
     with tab2:
         c1, c2 = st.columns(2)
         with c1:
@@ -788,35 +794,47 @@ elif page == " Dataset & Imbalance":
         with c2:
             st.markdown("**Fraud vs Normal Amounts**")
             st.image(os.path.join(PLOTS, "fraud_vs_normal_transaction_amounts.png"), use_container_width=True)
+        st.markdown("**Amount Distribution by Type & Fraud Status**")
         st.image(os.path.join(PLOTS, "amount_distribution_by_type_fraud.png"), use_container_width=True)
-
+ 
     with tab3:
         st.markdown("**Correlation Heatmap**")
         st.image(os.path.join(PLOTS, "correlation_heatmap.png"), use_container_width=True)
+        st.markdown("**Models Comparison Heatmap**")
+        st.image(os.path.join(PLOTS, "models_comparison_heatmap.png"), use_container_width=True)
         st.markdown("**EDA Feature Distributions**")
         st.image(os.path.join(PLOTS, "eda_feature_distributions.png"), use_container_width=True)
-
+ 
     with tab4:
+        st.markdown("**Top Fraud Patterns — Mean Feature Comparison**")
+        st.image(os.path.join(PLOTS, "top_fraud_patterns.png"), use_container_width=True)
         c1, c2 = st.columns(2)
         with c1:
-            st.image(os.path.join(PLOTS, "top_fraud_patterns.png"), use_container_width=True)
-        with c2:
+            st.markdown("**Transaction Volume Over Time**")
             st.image(os.path.join(PLOTS, "transaction_volume_over_time.png"), use_container_width=True)
-
+        with c2:
+            st.markdown("**EDA Class Distribution**")
+            st.image(os.path.join(PLOTS, "eda_class_distribution.png"), use_container_width=True)
+ 
+    with tab5:
+        st.markdown("**Feature Importance (XGBoost)**")
+        st.image(os.path.join(PLOTS, "feature_importance_1.png"), use_container_width=True)
+        st.markdown("**Feature Importance Comparison — All Models**")
+        st.image(os.path.join(PLOTS, "feature_importance_comparison.png"), use_container_width=True)
+ 
     st.markdown("---")
-
-    # ── Section 3: Class Imbalance ───────────────────────────────────────
+ 
+    # ── Section 3: Class Imbalance ────────────────────────────────────────────
     st.markdown("####  Handling Class Imbalance")
-
+ 
     st.markdown("""
     <div class="tg-card">
-    With only <b>0.13% fraud</b>, a naive model can achieve 99.87% accuracy by predicting
-    everything as legitimate — making accuracy useless as a metric. TrustGuard addresses this with
-    a two-pronged strategy: <b>SMOTE oversampling</b> and <b>fraud simulation augmentation</b>,
-    evaluated using Precision-Recall AUC instead of ROC-AUC.
+    With only <b>0.13% fraud</b>, a naive model achieves 99.87% accuracy by predicting everything
+    as legitimate — making accuracy useless. TrustGuard uses a two-step strategy:
+    <b>Fraud Simulation</b> followed by <b>SMOTE oversampling</b>, evaluated via Precision-Recall AUC.
     </div>
     """, unsafe_allow_html=True)
-
+ 
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Class Distribution (Before Balancing)**")
@@ -824,17 +842,19 @@ elif page == " Dataset & Imbalance":
     with c2:
         st.markdown("**Fraud Distribution**")
         st.image(os.path.join(PLOTS, "fraud_distribution.png"), use_container_width=True)
-
-    st.markdown("**EDA Class Distribution**")
-    st.image(os.path.join(PLOTS, "eda_class_distribution.png"), use_container_width=True)
-
-    st.markdown("####  Techniques Applied")
-
+ 
+    st.markdown("**Pipeline stages — fraud ratio at each step:**")
+    s1, s2, s3 = st.columns(3)
+    s1.metric("① Original Train Split", "~0.13%", help="Raw PaySim fraud rate")
+    s2.metric("② After Fraud Simulation", "~1.26%", help="5% of TRANSFER/CASH_OUT injected as fraud")
+    s3.metric("③ After SMOTE (Final Train)", "~23.07%", help="sampling_strategy=0.3 applied on augmented set")
+ 
+    st.markdown("#### 🛠️ Techniques Applied")
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
         **① Fraud Simulation Engine**
-        - Samples **5%** of legitimate TRANSFER & CASH_OUT transactions from training set
+        - Samples **5%** of legitimate TRANSFER & CASH_OUT transactions
         - Simulates full account drain: `amount = oldbalanceOrg`, `newbalanceOrig = 0`
         - Recomputes `balanceDiff` and `amount_ratio` to reflect drain behaviour
         - Labels injected rows as fraud — adds realistic, behaviour-grounded samples
@@ -844,25 +864,17 @@ elif page == " Dataset & Imbalance":
         st.markdown("""
         **② SMOTE Oversampling**
         - `sampling_strategy = 0.3` — minority class reaches **30% of majority class size**
-        - Reduced from 0.5 → 0.3 to avoid 40–60% training set bloat
+        - Reduced from 0.5 → 0.3 to avoid 40–60% training set bloat, We also try with 0.1 but it was way too small 
+          and had a very minor affect on dataset.
         - Applied **only to training set** — test set always stays real data only
         - Inside K-Fold CV, SMOTE runs per fold via `ImbPipeline` to prevent leakage
         - Three ratios tested in ablation: `0.0`, `0.3` (Best), `0.5`
         """)
-
-    st.markdown("**Pipeline stages — fraud ratio at each step:**")
-    s1, s2, s3 = st.columns(3)
-    s1.metric("① Original Train Split", "~0.13%", help="Raw PaySim fraud rate")
-    s2.metric("② After Fraud Simulation", "~1.26%", help="5% of TRANSFER/CASH_OUT injected as fraud")
-    s3.metric("③ After SMOTE (Final Train)", "~23.07%", help="sampling_strategy=0.3 applied on augmented set")
-
-    st.image(os.path.join(PLOTS, "outputs/ablation/ablation_smote_trend.png"), 
-             caption="Ablation B — AUPRC, Recall, Precision vs SMOTE ratio (0.0 vs 0.3 vs 0.5)",
-             use_container_width=True)
-    st.image(os.path.join(PLOTS, "..", "outputs", "cost_benefit_analysis.png") 
-             if not os.path.exists(os.path.join(PLOTS, "cost_benefit_analysis.png")) 
-             else os.path.join(PLOTS, "cost_benefit_analysis.png"),
-             use_container_width=True)
+ 
+    st.markdown("**SMOTE Ratio Ablation — AUPRC, Recall, Precision vs ratio (0.0 → 0.3 → 0.5)**")
+    st.image(os.path.join(ABLATION, "ablation_smote_trend.png"), use_container_width=True)
+    st.markdown("**Cost-Benefit Analysis**")
+    st.image(os.path.join(PLOTS, "cost_benefit_analysis.png"), use_container_width=True)
     
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 4 — MODEL PERFORMANCE
