@@ -614,12 +614,24 @@ elif page == "📂 Batch CSV Analysis":
     uploaded = st.file_uploader("Upload transactions CSV", type=["csv"])
 
     if uploaded:
-        raw = pd.read_csv(uploaded)
+        ROW_LIMIT = 500_000
+        raw = pd.read_csv(uploaded, nrows=ROW_LIMIT)
         st.info(f"Loaded **{len(raw):,}** rows × {len(raw.columns)} columns")
+        if len(raw) == ROW_LIMIT:
+            st.warning(f"Capped at {ROW_LIMIT:,} rows for memory safety.")
 
         # Preview
         with st.expander("Preview raw data (first 5 rows)"):
             st.dataframe(raw.head(), use_container_width=True)
+
+        # Process in chunks for very large files:
+        CHUNK = 50_000
+        probs = np.concatenate([
+            model.predict_proba(scaler.transform(
+                df_prep[FEATURES].iloc[i:i+CHUNK].values.astype(float)
+            ))[:,1]
+            for i in range(0, len(df_prep), CHUNK)
+        ])
 
         # Feature engineering
         def prep_batch(df):
