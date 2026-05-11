@@ -16,6 +16,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import streamlit as st
+# In app.py — simplified now that rag_module resolves its own path
+import rag_module as _rm   # no patching needed
 
 warnings.filterwarnings("ignore")
 
