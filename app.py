@@ -623,7 +623,7 @@ elif page == "📂 Batch CSV Analysis":
                 d[f"type_{t}"] = (d["type"].str.upper() == t).astype(int)
             d["balanceDiff"]  = d["oldbalanceOrg"]  - d["newbalanceOrig"]
             d["amount_ratio"] = d["amount"] / d["oldbalanceOrg"].replace(0, np.nan)
-            d["amount_ratio"].fillna(0, inplace=True)
+            d["amount_ratio"] = d["amount_ratio"].fillna(0)
             missing = [f for f in FEATURES if f not in d.columns]
             for m in missing: d[m] = 0
             return d
