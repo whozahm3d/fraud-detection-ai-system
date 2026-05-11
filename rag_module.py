@@ -72,8 +72,14 @@ def load_rag_components(openai_api_key=None):
         os.environ["OPENAI_API_KEY"] = openai_api_key
     embed_model   = SentenceTransformer(RAG_CONFIG["EMBEDDING_MODEL"])
     chroma_client = chromadb.PersistentClient(path=RAG_CONFIG["CHROMA_DB_PATH"])
+    # Patch: delete stored embedding function metadata that causes _type error
+    try:
+        col = chroma_client.get_collection(name=RAG_CONFIG["COLLECTION_NAME"])
+    except Exception:
+        col = None
     # AFTER
-    collection = chroma_client.get_collection(
+    from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+    collection = chroma_client.get_or_create_collection(
         name=RAG_CONFIG["COLLECTION_NAME"],
         embedding_function=None   # we handle embeddings ourselves — skip deserialization
     )
