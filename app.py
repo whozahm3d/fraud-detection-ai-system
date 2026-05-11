@@ -180,7 +180,6 @@ def load_deployment_model():
     return model, scaler, meta
 
 import base64
-@st.cache_resource(show_spinner="Loading model artefacts…")
 def show_img(path, width="100%"):
     if os.path.exists(path):
         with open(path, "rb") as f:
@@ -943,7 +942,8 @@ elif page == " Model Performance":
         if os.path.exists(fpath):
             with cols[i % 2]:
                 st.markdown(f"**{title}**")
-                st.image(Image.open(fpath), use_container_width=True)
+                show_img(fpath)
+                #st.image(Image.open(fpath), use_container_width=True)
 
     # XGBoost metrics detail
     xgb_path = os.path.join(METRICS_DIR, "xgboost_metrics.json")
@@ -1013,7 +1013,8 @@ elif page == " Ablation Study":
         if os.path.exists(fpath):
             with ab_cols[i % 2]:
                 st.markdown(f"**{title}**")
-                st.image(fpath, use_container_width=True)
+                show_img(fpath)
+                #st.image(fpath, use_container_width=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 6 — ABOUT
