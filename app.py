@@ -739,12 +739,13 @@ elif page == " Batch CSV Analysis":
                            use_container_width=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PAGE 6 — DATA & IMBALANCE
+# PAGE 3 — DATA & IMBALANCE
 # ─────────────────────────────────────────────────────────────────────────────
 elif page == " Dataset & Imbalance":
     st.markdown("###  Data Overview & Imbalance Handling")
  
-    PLOTS = "outputs/plots"
+    PLOTS    = PLOTS_DIR
+    ABLATION = ABLATION_DIR
  
     # ── Section 1: Dataset Summary ───────────────────────────────────────────
     st.markdown("####  Dataset at a Glance")
@@ -767,8 +768,6 @@ elif page == " Dataset & Imbalance":
  
     # ── Section 2: EDA Visualizations ────────────────────────────────────────
     st.markdown("####  Exploratory Data Analysis")
- 
-    ABLATION = "outputs/ablation"
  
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "Transaction Types", "Amount Distributions",
