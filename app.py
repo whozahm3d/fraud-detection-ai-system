@@ -182,6 +182,7 @@ def load_deployment_model():
 import base64
 def show_img(path, width="100%"):
     if os.path.exists(path):
+        st.caption(f"✅ {path}") 
         with open(path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
         st.markdown(f'<img src="data:image/png;base64,{b64}" style="width:{width}; border-radius:8px;">', unsafe_allow_html=True)
