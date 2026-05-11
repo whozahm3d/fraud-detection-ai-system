@@ -1,13 +1,13 @@
 # TrustGuard — Fraud Analyst Dashboard
-# Streamlit Cloud Deployment Requirements
-# Python 3.10 recommended
+# Streamlit Cloud Deployment Ready
+# Python 3.10+
 
 # ── Core ──────────────────────────────────────────────────────────────────────
 streamlit==1.45.0
 
 # ── Data ──────────────────────────────────────────────────────────────────────
 pandas==2.2.3
-numpy==1.26.4
+numpy>=1.26.4,<2.0
 scipy==1.13.1
 
 # ── Visualisation ─────────────────────────────────────────────────────────────
@@ -20,14 +20,18 @@ xgboost==2.1.4
 imbalanced-learn==0.12.4
 joblib==1.4.2
 
-# ── XAI ───────────────────────────────────────────────────────────────────────
-shap==0.46.0
+# ── Explainability (XAI) ──────────────────────────────────────────────────────
+shap>=0.45.0,<0.48.0
 
 # ── RAG Pipeline ──────────────────────────────────────────────────────────────
 chromadb==0.5.23
 sentence-transformers==3.0.1
 rank-bm25==0.2.2
 openai>=1.30.0,<2.0.0
+
+# ── Compatibility Fixes ───────────────────────────────────────────────────────
+protobuf>=6.31.1,<8.0.0
+pydantic<3
 
 # ── System ────────────────────────────────────────────────────────────────────
 psutil==6.1.1
