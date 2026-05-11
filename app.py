@@ -849,7 +849,7 @@ elif page == " Dataset & Imbalance":
     s2.metric("② After Fraud Simulation", "~1.26%", help="5% of TRANSFER/CASH_OUT injected as fraud")
     s3.metric("③ After SMOTE (Final Train)", "~23.07%", help="sampling_strategy=0.3 applied on augmented set")
  
-    st.markdown("#### 🛠️ Techniques Applied")
+    st.markdown("####  Techniques Applied")
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
@@ -864,7 +864,7 @@ elif page == " Dataset & Imbalance":
         st.markdown("""
         **② SMOTE Oversampling**
         - `sampling_strategy = 0.3` — minority class reaches **30% of majority class size**
-        - Reduced from 0.5 → 0.3 to avoid 40–60% training set bloat, We also try with 0.1 but it was way too small 
+        - Reduced from 0.5 → 0.3 to avoid 40–60% training set bloat, We also try with 0.1 but it was very small 
           and had a very minor affect on dataset.
         - Applied **only to training set** — test set always stays real data only
         - Inside K-Fold CV, SMOTE runs per fold via `ImbPipeline` to prevent leakage
