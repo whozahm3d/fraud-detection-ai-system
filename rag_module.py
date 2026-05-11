@@ -71,14 +71,19 @@ def load_rag_components(openai_api_key=None):
     if openai_api_key:
         os.environ["OPENAI_API_KEY"] = openai_api_key
     embed_model   = SentenceTransformer(RAG_CONFIG["EMBEDDING_MODEL"])
+    # Patch: clear stored embedding_function config that causes _type error
+    import sqlite3 as _sqlite3
+    _db_path = os.path.join(RAG_CONFIG["CHROMA_DB_PATH"], "chroma.sqlite3")
+    if os.path.exists(_db_path):
+        _conn = _sqlite3.connect(_db_path)
+        _conn.execute(
+            "UPDATE collections SET config_json_str = NULL WHERE name = ?",
+            (RAG_CONFIG["COLLECTION_NAME"],)
+        )
+        _conn.commit()
+        _conn.close()
     chroma_client = chromadb.PersistentClient(path=RAG_CONFIG["CHROMA_DB_PATH"])
-    # Patch: delete stored embedding function metadata that causes _type error
-    try:
-        col = chroma_client.get_collection(name=RAG_CONFIG["COLLECTION_NAME"])
-    except Exception:
-        col = None
     # AFTER
-    from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
     collection = chroma_client.get_or_create_collection(
         name=RAG_CONFIG["COLLECTION_NAME"],
         embedding_function=None   # we handle embeddings ourselves — skip deserialization
