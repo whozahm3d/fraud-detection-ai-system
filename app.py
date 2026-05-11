@@ -265,9 +265,10 @@ def build_xai_figure(model, X_scaled: np.ndarray, feature_names: list, threshold
                     fontsize=7, color="#263D5B")
 
         plt.tight_layout()
-        return fig, "SHAP (TreeExplainer)"
+        return fig, method, "SHAP (TreeExplainer)"
 
     except Exception:
+        plt.close("all")  # clean up on failure
         pass  # fall through to fallback
 
     # ── Fallback: XGBoost built-in feature importances ────────────────────
@@ -536,7 +537,8 @@ if page == "🔍 Predict Transaction":
         ax_g.set_xlabel("Probability", fontsize=9)
         ax_g.text(threshold + 0.01, 0, f"threshold {threshold:.0%}", fontsize=8,
                   va="center", color="#263D5B")
-        ax_g.text(prob, 0, f" {prob:.1%}", fontsize=9, va="center",
+        ha = "left" if prob < 0.75 else "right"p
+        ax_g.text(min(prob, 0.95), 0, f" {prob:.1%}", ha=ha, fontsize=9, va="center",
                   color="white" if prob > 0.4 else "#263D5B", fontweight="bold")
         for sp in ax_g.spines.values(): sp.set_visible(False)
         plt.tight_layout()
@@ -545,7 +547,7 @@ if page == "🔍 Predict Transaction":
 
         # ── Export report ─────────────────────────────────────────────────
         st.markdown("---")
-        st.markdown("#### 📥 Export Report")
+        st.markdown("####  Export Report")
         report_lines = [
             f"TrustGuard Fraud Analysis Report",
             f"=" * 40,
@@ -587,7 +589,7 @@ if page == "🔍 Predict Transaction":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 2 — BATCH CSV ANALYSIS
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == "📂 Batch CSV Analysis":
+elif page == " Batch CSV Analysis":
     model, scaler, meta = load_deployment_model()
 
     st.markdown("### 📂 Batch Transaction Analysis")
@@ -823,7 +825,8 @@ elif page == "🔬 Ablation Study":
         axes[1].barh(ab_df["Condition"], ab_df["Test AUC"], color=pal,
                      edgecolor="white", linewidth=0.6)
         axes[1].set_title("Test AUC by Condition", fontsize=10, color="#263D5B", fontweight="bold")
-        axes[1].set_xlim(0.98, 1.002)
+        min_auc = ab_df["Test AUC"].min(
+        axes[1].set_xlim(max(0, min_auc - 0,01), 1.002)
         axes[1].tick_params(labelsize=7, colors="#263D5B")
         for sp in axes[1].spines.values(): sp.set_visible(False)
 
