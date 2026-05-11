@@ -158,11 +158,13 @@ RISK_COLORS = {
 
 @st.cache_resource(show_spinner="Loading embedding models...")
 def load_embedding_models():
+    # At the top of app.py, call it once so it gets cached on startup
+    embed_model, reranker = load_embedding_models()
     from sentence_transformers import SentenceTransformer, CrossEncoder
     em = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-    try: re = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-    except: re = None
-    return em, re
+    try: reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    except: reranker = None
+    return em, reranker
 # OR: commit model weights to outputs/models/embeddings/ and load locally
 
 @st.cache_resource(show_spinner="Loading model artefacts…")
