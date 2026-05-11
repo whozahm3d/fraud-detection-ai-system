@@ -600,10 +600,10 @@ if page == " Predict Transaction":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 2 — BATCH CSV ANALYSIS
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == "📂 Batch CSV Analysis":
+elif page == " Batch CSV Analysis":
     model, scaler, meta = load_deployment_model()
 
-    st.markdown("### 📂 Batch Transaction Analysis")
+    st.markdown("###  Batch Transaction Analysis")
     st.markdown("""
     Upload a CSV with transaction data. Required columns:
     `step, amount, oldbalanceOrg, newbalanceOrig, oldbalanceDest, newbalanceDest, type`
@@ -621,7 +621,7 @@ elif page == "📂 Batch CSV Analysis":
         "newbalanceOrig": 48500, "oldbalanceDest": 10000, "newbalanceDest": 11500,
         "type": "PAYMENT", "isFraud": 0,
     }])
-    st.download_button("⬇️ Download CSV Template", template_df.to_csv(index=False),
+    st.download_button(" Download CSV Template", template_df.to_csv(index=False),
                        "template.csv", "text/csv")
 
     uploaded = st.file_uploader("Upload transactions CSV", type=["csv"])
@@ -738,8 +738,8 @@ elif page == "📂 Batch CSV Analysis":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 3 — MODEL PERFORMANCE
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == "📊 Model Performance":
-    st.markdown("### 📊 Model Performance Dashboard")
+elif page == " Model Performance":
+    st.markdown("###  Model Performance Dashboard")
 
     comp_df = load_model_comparison()
     if comp_df is not None:
@@ -809,7 +809,7 @@ elif page == "📊 Model Performance":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 4 — ABLATION STUDY
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == "🔬 Ablation Study":
+elif page == " Ablation Study":
     st.markdown("### 🔬 Ablation Study")
     st.markdown("Component-level analysis of the pipeline — showing which parts contribute most.")
 
@@ -866,8 +866,8 @@ elif page == "🔬 Ablation Study":
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 5 — ABOUT
 # ─────────────────────────────────────────────────────────────────────────────
-elif page == "ℹ️ About":
-    st.markdown("### ℹ️ About TrustGuard")
+elif page == " About":
+    st.markdown("###  About TrustGuard")
     st.markdown("""
     <div class="tg-card">
     <b>TrustGuard</b> is an AI-powered fraud detection system built on the PaySim synthetic financial
