@@ -738,6 +738,9 @@ elif page == " Batch CSV Analysis":
                            "trustguard_batch_results.csv", "text/csv",
                            use_container_width=True)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# PAGE 3 — BATCH CSV ANALYSIS
+# ─────────────────────────────────────────────────────────────────────────────
 elif page == " Data & Imbalance":
     st.markdown("###  Data Overview & Imbalance Handling")
 
@@ -844,7 +847,7 @@ elif page == " Data & Imbalance":
         - Reduced from 0.5 → 0.3 to avoid 40–60% training set bloat
         - Applied **only to training set** — test set always stays real data only
         - Inside K-Fold CV, SMOTE runs per fold via `ImbPipeline` to prevent leakage
-        - Three ratios tested in ablation: `0.0`, `0.3` ✅, `0.5`
+        - Three ratios tested in ablation: `0.0`, `0.3` (Best), `0.5`
         """)
 
     st.markdown("**Pipeline stages — fraud ratio at each step:**")
