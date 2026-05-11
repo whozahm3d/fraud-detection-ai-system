@@ -16,6 +16,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import streamlit as st
+from PIL import Image
 
 warnings.filterwarnings("ignore")
 
@@ -798,7 +799,7 @@ elif page == " Dataset & Imbalance":
  
     with tab3:
         st.markdown("**Correlation Heatmap**")
-        st.image(os.path.join(PLOTS, "correlation_heatmap.png"), use_container_width=True)
+        st.image(os.path.join(PLOTS_DIR, "correlation_heatmap.png"), use_container_width=True)
         st.markdown("**Models Comparison Heatmap**")
         st.image(os.path.join(PLOTS, "models_comparison_heatmap.png"), use_container_width=True)
         st.markdown("**EDA Feature Distributions**")
@@ -817,9 +818,9 @@ elif page == " Dataset & Imbalance":
  
     with tab5:
         st.markdown("**Feature Importance (XGBoost)**")
-        st.image(os.path.join(PLOTS, "feature_importance_1.png"), use_container_width=True)
+        st.image(Image.open(os.path.join(PLOTS, "feature_importance_1.png")), use_container_width=True)
         st.markdown("**Feature Importance Comparison — All Models**")
-        st.image(os.path.join(PLOTS, "feature_importance_comparison.png"), use_container_width=True)
+        st.image(Image.open(os.path.join(PLOTS, "feature_importance_comparison.png")), use_container_width=True)
  
     st.markdown("---")
  
@@ -932,7 +933,7 @@ elif page == " Model Performance":
         if os.path.exists(fpath):
             with cols[i % 2]:
                 st.markdown(f"**{title}**")
-                st.image(fpath, use_container_width=True)
+                st.image(Image.open(fpath), use_container_width=True)
 
     # XGBoost metrics detail
     xgb_path = os.path.join(METRICS_DIR, "xgboost_metrics.json")
