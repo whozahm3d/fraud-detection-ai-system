@@ -919,8 +919,15 @@ elif page == " Model Performance":
         ax_b.tick_params(colors="#263D5B", labelsize=9)
         for sp in ax_b.spines.values(): sp.set_visible(False)
         plt.tight_layout()
-        st.pyplot(fig_b, use_container_width=True)
-        plt.close(fig_b)
+        # AFTER
+        plt.tight_layout()
+        col_chart_l, col_chart_r = st.columns(2)
+        with col_chart_l:
+            st.pyplot(fig_b, use_container_width=True)
+            plt.close(fig_b)
+        with col_chart_r:
+            st.markdown("**Models Comparison of All Metrics**")
+            show_img(os.path.join(PLOTS_DIR, "model_comparison_all_metrics.png"))
 
     st.markdown("---")
     st.markdown("#### Saved Visualisations")
