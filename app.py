@@ -44,7 +44,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────────────────────
 # CUSTOM CSS — Dark Cybersecurity / Hacker Aesthetic
 # ─────────────────────────────────────────────────────────────────────────────
-st.markdown("""
+st.markdown(r"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap');
 
@@ -821,7 +821,8 @@ def mpl_dark_style(fig, ax_list=None):
 # ─────────────────────────────────────────────────────────────────────────────
 def build_xai_figure(model, X_scaled: np.ndarray, feature_names: list, threshold: float = 0.5):
     try:
-        import shap, numpy as np
+        import shap
+        import numpy as np
         masker = shap.maskers.Independent(X_scaled, max_samples=50)
         model_type = type(model).__name__
         if "XGB" in model_type or "GBM" in model_type:
@@ -1092,52 +1093,61 @@ if page == "predict":
                     except Exception as e:
                         st.error(f"[ RAG ERROR ]: {e}")
 
-        # ── Export report ────────────────────────────────────────────────────
-        st.markdown('<hr class="tg-glow-line">', unsafe_allow_html=True)
-        st.markdown('<div class="tg-section-title">// EXPORT</div>', unsafe_allow_html=True)
+        # ── Export report ────────────────────────────────────────────
+        st.markdown("---")
+        st.markdown("#### Export Report")
 
         report_lines = [
-            f"TRUSTGUARD AI — FRAUD ANALYSIS REPORT",
-            f"{'='*50}",
-            f"Transaction ID   : {tx_id}",
-            f"Type             : {tx_type}",
-            f"Amount (PKR)     : {amount:,.2f}",
+            f"TrustGuard Fraud Analysis Report",
+            "=" * 40,
+            f"Transaction ID  : {tx_id}",
+            f"Type            : {tx_type}",
+            f"Amount (PKR)    : {amount:,.2f}",
             f"Fraud Probability: {prob:.4f} ({prob:.1%})",
-            f"Risk Tier        : {risk_tier}",
-            f"Verdict          : {'FRAUD' if is_fraud else 'LEGITIMATE'}",
-            f"Threshold Used   : {threshold}",
-            f"Model            : {meta.get('model_type','XGBoost')} | AUC {meta.get('test_auc',0.9995):.4f}",
-            f"",
-            f"FEATURE VECTOR:",
-            *[f"  {FEATURE_LABELS.get(k,k):35s}: {row[k]:>12.4f}" for k in FEATURES],
+            f"Risk Tier       : {risk_tier}",
+            f"Verdict         : {'FRAUD' if is_fraud else 'LEGITIMATE'}",
+            f"Threshold Used  : {threshold}",
+            f"Model           : {meta.get('model_type','XGBoost')} | AUC {meta.get('test_auc',0.9995):.4f}",
+            "",
+            "Features:",
         ]
-        report_text = "\n".join(report_lines)
-
-        exp_c1, exp_c2 = st.columns(2)
-        with exp_c1:
-            st.code(report_text, language=None)
-            st.download_button(
-                "⬇ DOWNLOAD REPORT (.TXT)",
-                data=report_text,
-                file_name=f"trustguard_{tx_id}_{risk_tier}.txt",
-                mime="text/plain",
-                use_container_width=True,
+        for k in FEATURES:
+            report_lines.append(
+                f"  {FEATURE_LABELS.get(k,k):35s}: {row[k]:>12.4f}"
             )
-        with exp_c2:
-            xai_buf = io.BytesIO()
-            xai_fig2, _ = build_xai_figure(model, X_scaled, FEATURES)
-            xai_fig2.savefig(xai_buf, format="png", dpi=150, bbox_inches="tight",
-                             facecolor="#040806")
+        report_text = "\n".join(report_lines)
+        st.code(report_text, language=None)
+        
+        st.download_button(
+            "⬇️ Download Report (.txt)",
+            data=report_text,
+            file_name=f"trustguard_{tx_id}_{risk_tier}.txt",
+            mime="text/plain",
+        )
+
+
+
+        xai_buf = io.BytesIO()
+
+        try:
+            xai_fig.savefig(
+                xai_buf,
+                format="png",
+                dpi=150,
+                bbox_inches="tight"
+            )
             xai_buf.seek(0)
-            st.pyplot(xai_fig2, use_container_width=True)
+            
             st.download_button(
-                "⬇ DOWNLOAD XAI CHART (.PNG)",
+                "⬇️ Download XAI Chart (.png)",
                 xai_buf,
                 file_name=f"trustguard_xai_{tx_id}.png",
                 mime="image/png",
-                use_container_width=True,
             )
-            plt.close(xai_fig2)
+        except Exception as e:
+            st.warning(f"Could not generate XAI download: {e}")
+        finally:
+            plt.close("all")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE 2 — BATCH CSV ANALYSIS
