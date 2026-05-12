@@ -1,52 +1,73 @@
 # Perform initial dataset inspection including shape, column names, data types, and statistical summary to understand the dataset structure.
+# MEMORY ADDITION #1 — free loader garbage
+gc.collect()
 
 def dataset_shape(df):
     """
     Display number of rows and columns
     """
-    print("Dataset Shape:", df.shape)
-dataset_shape(df)
+    print("\nDataset Shape:", df.shape)
 
 def dataset_columns(df):
     """
     Display column names
     """
-    print("Columns:")
+    print("\nColumns:")
     print(df.columns)
-dataset_columns(df)
+
 
 def dataset_datatypes(df):
     """
     Display datatypes of each column
     """
-    print("Data Types:")
+    print("\nData Types:")
     print(df.dtypes)
-dataset_datatypes(df)
 
-def dataset_head(df):
+def dataset_info(df):
     """
-    Display first rows
+    Display overall info of the entire dataset
     """
-    print("First 5 Rows:")
-    print(df.head())
-dataset_head(df)
+    print("\nDataset Info:")
+    print(df.info())
 
 def dataset_description(df):
     """
     Statistical summary of dataset
     """
-    print("Dataset Statistical Summary:")
+    print("\nDataset Statistical Summary:")
     print(df.describe())
-dataset_description(df)
+
 
 def missing_values(df):
     """
     Check missing values in dataset
     """
-    print("Missing Values:")
+    print("\nMissing Values:")
     print(df.isnull().sum())
+
+def dataset_fraud(df):
+    """
+    Display fraud distribution
+    """
+    print(df['isFraud'].value_counts(normalize=True))
+
+
+def dataset_head(df):
+    """
+    Display first rows
+    """
+    print("\nFirst 5 Rows:")
+    print(df.head())
+
+
+
+dataset_shape(df)
+dataset_columns(df)
+dataset_datatypes(df)
+dataset_info(df)
+dataset_description(df)
 missing_values(df)
-
-
+dataset_fraud(df)
+dataset_head(df)
 
 
