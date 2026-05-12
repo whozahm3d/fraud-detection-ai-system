@@ -4,23 +4,29 @@
 def preprocess_data(df):
 
     df = remove_duplicates(df)
-
-    df = encode_transaction_type(df)
-
-    numerical_columns = [
-        "amount",
-        "oldbalanceOrg",
-        "newbalanceOrig",
-        "oldbalanceDest",
-        "newbalanceDest"
-    ]
-
-    scaler = StandardScaler()
-
-    df[numerical_columns] = scaler.fit_transform(df[numerical_columns])
+    df = drop_null(df)
+    df = feature_engineering(df)
+    df = encode_features(df)
 
     return df
-preprocess_data(df)
+
+
+# Return the processed DataFrame
+#return df
+print("PREPROCESSING STARTED")
+print_memory("[BEFORE PREPROCESS]")
+
+# Use existing preprocess_data function
+df = preprocess_data(df)
+
+print("\nPREPROCESING COMPLETED!")
+print_memory("[AFTER PREPROCESS]")
+print(f"Processed shape: {df.shape}")
+
+df.head()
+
+# MEMORY ADDITION #2 — free preprocessing garbage
+gc.collect()
 
 
 # Fraud vs Non-Fraud distribution
@@ -36,16 +42,3 @@ fraud_percentage = df["isFraud"].value_counts(normalize=True) * 100
 
 print("\nFraud Percentage:")
 print(fraud_percentage)
-
-
-# ploting the data before scaling and after scaling and checking how the standard scaling affect the entire dataset.
-plt.figure(figsize=(10,4))
-plt.subplot(1,2,1)
-# Load a fresh copy of the dataset to show 'Before Scaling'
-original_df = load_dataset("/content/PaySim - Synthetic Financial Dataset for Fraud Detection.csv")
-sns.histplot(original_df["amount"])
-plt.title("Before Scaling")
-
-plt.subplot(1,2,2)
-sns.histplot(df["amount"])
-plt.title("After Scaling")
