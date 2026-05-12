@@ -1,15 +1,23 @@
 # Convert categorical variables into numerical form by using LabelEnoder so they can be used by machine learning models.
 
-def encode_transaction_type(df):
-    """
-    Convert transaction type into numeric values
-    """
+def feature_engineering(df):
+    # Use inplace operations to avoid unnecessary copy
+    df['balanceDiff'] = (df['oldbalanceOrg'] - df['newbalanceOrig']).astype('float32')
+    df['amount_ratio'] = (df['amount'] / (df['oldbalanceOrg'] + 1)).astype('float32')
 
-    encoder = LabelEncoder()
-
-    df["type"] = encoder.fit_transform(df["type"])
-
+    print("Feature Engineering is Done!")
     return df
-encode_transaction_type(df)
+
+
+def encode_features(df):
+    """
+    Convert categorical type columns into numeric values/ Do one-hot encoding
+
+    """
+
+    df = pd.get_dummies(df, columns=['type'], drop_first=True)
+    print("Feature encoding done.")
+    return df
+
 
 
