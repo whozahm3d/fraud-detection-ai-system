@@ -1,121 +1,351 @@
-# TrustGuard AI: Explainable Fraud Detection for Digital Banking with RAG-Based Policy Assistance
+<div align="center">
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue) ![Pandas](https://img.shields.io/badge/Pandas-2.0-green) ![Scikit--Learn](https://img.shields.io/badge/Scikit--Learn-1.3-orange) ![Status](https://img.shields.io/badge/Status-Deliverable%201%20Complete-brightgreen)
+# 🛡️ TrustGuard AI
+### AI-Powered Fraud Detection for Digital Banking
+#### with Explainable AI & RAG-Based Policy Assistance
 
----
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.45-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![XGBoost](https://img.shields.io/badge/XGBoost-2.1-006400?style=for-the-badge)](https://xgboost.readthedocs.io)
+[![SHAP](https://img.shields.io/badge/XAI-SHAP-orange?style=for-the-badge)](https://shap.readthedocs.io)
+[![RAG](https://img.shields.io/badge/RAG-ChromaDB%20%2B%20GPT--4o--mini-7B68EE?style=for-the-badge)](https://www.trychroma.com)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=for-the-badge)]()
 
-## Description
+<br>
 
-Financial fraud is a growing threat in the digital banking era, costing institutions and individuals trillions of dollars each year. TrustGuard AI is an end-to-end AI-powered fraud detection system that uses machine learning to identify suspicious financial transactions and integrates **Explainable AI (XAI)** to provide transparent, interpretable reasoning behind every prediction. A **Retrieval-Augmented Generation (RAG) policy assistant** will further enhance the system by retrieving relevant banking regulations and fraud policies to explain why certain transactions are flagged — making TrustGuard AI both accurate and accountable.
+**🚀 Live Demo →** [trustguard-ai-fraud-detection.streamlit.app](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
 
-This repository contains **Deliverable 1**, covering the complete data acquisition, preprocessing pipeline, and exploratory data analysis on the PaySim synthetic financial dataset.
+<br>
 
----
+> An end-to-end academic AI system that detects financial fraud on severely imbalanced data (0.13% fraud rate, 6.3M transactions), explains every prediction with SHAP, and grounds risk reports in State Bank of Pakistan regulations via a RAG pipeline — all accessible through a live Streamlit dashboard.
 
-## Problem Statement
-
-Financial institutions process millions of digital transactions daily. Identifying fraudulent activity is challenging because fraud patterns evolve continuously and often closely resemble legitimate behavior. Traditional rule-based systems struggle to detect new and sophisticated fraud strategies, frequently producing high false-positive rates that overwhelm fraud analysts.
-
-TrustGuard AI addresses this by developing a machine learning-based framework that learns hidden behavioral patterns in transaction data, detects anomalies with higher accuracy, and provides transparent, explainable decisions — meeting both operational and regulatory requirements.
-
----
-
-## Objectives
-
-- **Data Preprocessing:** Load, inspect, clean, and prepare the PaySim dataset for analysis.
-- **Exploratory Data Analysis:** Visualize transaction patterns and uncover key fraud signals.
-- **Feature Engineering:** Encode categorical variables and scale numerical features for model readiness.
-- **Fraud Detection Model:** Train and evaluate machine learning classifiers to identify fraudulent transactions.
-- **Explainability:** Apply SHAP and LIME to make model predictions interpretable and transparent.
-- **RAG Policy Assistant:** Retrieve relevant fraud regulations and generate policy-grounded explanations.
-- **Web Interface:** Deploy a real-time fraud monitoring dashboard for analysts and institutions.
+</div>
 
 ---
 
-## Dataset
+## ⚡ Key Results at a Glance
 
-This project uses the **PaySim Synthetic Financial Dataset for Fraud Detection**, available on Kaggle.
+<div align="center">
 
-> Dataset Link: [Kaggle — Synthetic Financial Datasets for Fraud Detection](https://www.kaggle.com/datasets/ealaxi/paysim1)
+| Metric | XGBoost (Deployed) |
+|:---|:---:|
+| **AUC-ROC** | **0.9995** |
+| **Recall** | **0.9976** |
+| **Avg Precision** | **0.9358** |
+| **F1 Score** | **0.5691** |
+| **Test Accuracy** | **99.80%** |
+| RAG Hallucinations | **0 / 4** |
+| Fraud cases caught (6.3M test set) | **8,190 / 8,213** |
 
-PaySim simulates real-world mobile money transactions calibrated against private data from an African mobile payment service. It provides a realistic and privacy-preserving environment for training fraud detection models.
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Project Overview](#-project-overview)
+- [System Architecture](#-system-architecture)
+- [Features](#-features)
+- [Dataset](#-dataset)
+- [Methodology](#-methodology)
+  - [Class Imbalance Handling](#class-imbalance-handling)
+  - [Feature Engineering](#feature-engineering)
+  - [Models Trained](#models-trained)
+  - [XAI — SHAP Explanations](#xai--shap-explanations)
+  - [RAG Pipeline](#rag-pipeline)
+- [Results](#-results)
+- [Live Dashboard](#-live-dashboard)
+- [Quick Start](#-quick-start)
+- [Full Setup Guide](#-full-setup-guide)
+- [Project Structure](#-project-structure)
+- [Academic Context](#-academic-context)
+- [Team](#-team)
+
+---
+
+## 🎯 Project Overview
+
+Financial fraud causes trillions of dollars in annual losses globally. Detecting it is hard — not because the algorithms are weak, but because **fraud is statistically invisible**: only 0.13% of transactions in the PaySim dataset are fraudulent. A naïve model predicting "legitimate" on everything achieves 99.87% accuracy while catching zero fraud.
+
+**TrustGuard AI** solves this through three integrated components:
+
+1. **Fraud Detection Engine** — A two-stage imbalance pipeline (Fraud Simulation + SMOTE) trains four ML models under identical conditions. XGBoost is deployed with AUC-ROC = 0.9995 and Recall = 0.9976.
+
+2. **Explainable AI (XAI)** — SHAP TreeExplainer generates per-transaction waterfall explanations, showing exactly which features drove each prediction and by how much.
+
+3. **RAG Policy Assistant** — A hybrid retrieval system (BM25 + dense vectors + CrossEncoder reranking) retrieves relevant SBP regulatory provisions and feeds them to GPT-4o-mini, generating grounded regulatory risk reports with zero hallucinations.
+
+> **Academic note:** This is a final-year university AI course project built on the PaySim synthetic dataset. Results are strong but not validated on real-world production transaction data.
+
+---
+
+## 🏗️ System Architecture
+
+```
+Raw PaySim CSV (6.36M rows)
+        │
+        ▼
+┌─────────────────────┐
+│   Data Cleaning &   │  Drop nameOrig, nameDest, isFlaggedFraud
+│  Feature Engineering│  Add balanceDiff, amount_ratio, one-hot type
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│  Fraud Simulation   │  Inject synthetic full-drain transactions
+│     Engine          │  0.13% → 1.26% fraud rate
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐     ┌──────────────────────────┐
+│  80/20 Stratified   │     │   SBP Regulatory Corpus  │
+│    Train/Test Split │     │  (5 PDFs → ~100 chunks)  │
+└─────────┬───────────┘     └────────────┬─────────────┘
+          │                              │
+          ▼                              ▼
+┌─────────────────────┐     ┌──────────────────────────┐
+│  ImbPipeline × 5    │     │  ChromaDB Vector Store   │
+│  (SMOTE 0.3 →       │     │  all-MiniLM-L6-v2        │
+│  StandardScaler →   │     │  BM25 + Dense Retrieval  │
+│  Classifier)        │     │  CrossEncoder Reranker   │
+└─────────┬───────────┘     └────────────┬─────────────┘
+          │                              │
+          ▼                              ▼
+┌─────────────────────┐     ┌──────────────────────────┐
+│  XGBoost (deployed) │────▶│   GPT-4o-mini Generator  │
+│  + SHAP TreeExplain │     │   Regulatory Risk Report │
+└─────────┬───────────┘     └────────────┬─────────────┘
+          │                              │
+          └──────────────┬───────────────┘
+                         ▼
+              ┌─────────────────────┐
+              │  Streamlit Dashboard│
+              │  6 interactive pages│
+              └─────────────────────┘
+```
+
+---
+
+## ✨ Features
+
+### 🔍 Fraud Detection
+- Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
+- Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
+- 5-fold cross-validation with SMOTE applied strictly inside each fold
+- Full ablation study across 7 conditions isolating contribution of each pipeline component
+
+### 🧠 Explainable AI
+- **SHAP TreeExplainer** for per-transaction waterfall plots
+- Feature importance comparison across all 4 models
+- Bias & fairness check across transaction type subgroups
+- Threshold optimisation curve showing precision/recall trade-offs
+
+### 📜 RAG Policy Assistant
+- **Hybrid retrieval**: BM25 (lexical) + sentence-transformers (semantic) combined
+- **CrossEncoder reranking** (ms-marco-MiniLM-L-6-v2) for passage quality scoring
+- **GPT-4o-mini** generation grounded in SBP regulatory documents
+- Zero hallucinations across all evaluated transactions
+- Average retrieval Precision@5 = 0.855 across 10 regulatory queries
+
+### 📊 Interactive Dashboard
+- Single transaction prediction with real-time SHAP explanation
+- Batch CSV upload and scoring
+- Full EDA visualisation suite (34 plots)
+- Model comparison, confusion matrices, ROC/PR curves
+- Ablation study explorer
+- Regulatory report generation (requires OpenAI API key)
+
+---
+
+## 📊 Dataset
+
+**PaySim Synthetic Financial Dataset** — [Kaggle Link](https://www.kaggle.com/datasets/ealaxi/paysim1)
+
+A multi-agent simulation calibrated against real mobile money transaction data from an African financial institution.
 
 | Property | Value |
-|---|---|
-| Total Transactions | 6,362,620 |
-| Total Features | 11 |
-| Fraudulent Transactions | 8,213 (0.13%) |
-| Fraud Transaction Types | TRANSFER, CASH_OUT only |
-| Missing Values | None |
-| Duplicate Records | None |
+|:---|:---|
+| Total transactions | 6,362,620 |
+| Fraudulent transactions | 8,213 (**0.13%**) |
+| Legitimate transactions | 6,354,407 |
+| Simulation period | 30 days (743 hourly steps) |
+| Transaction types | CASH_OUT, TRANSFER, PAYMENT, DEBIT, CASH_IN |
+| Fraud types | CASH_OUT and TRANSFER **only** |
+| Missing values | None |
 
-**Key Features:**
-
-| Column | Description |
-|---|---|
-| `step` | Simulated time unit (1 step = 1 hour) |
-| `type` | Transaction type (CASH-IN, CASH-OUT, DEBIT, PAYMENT, TRANSFER) |
-| `amount` | Transaction amount in local currency |
-| `oldbalanceOrg` | Originating account balance before transaction |
-| `newbalanceOrig` | Originating account balance after transaction |
-| `oldbalanceDest` | Destination account balance before transaction |
-| `newbalanceDest` | Destination account balance after transaction |
-| `isFraud` | Target label: 1 = Fraudulent, 0 = Legitimate |
-
-> **Note:** The raw dataset is not included in this repository due to size. Download it from the link above and place it in `data/raw/`.
+> ⚠️ The raw dataset (~500MB) is not included. Download from Kaggle and place at `Data/original_dataset/`.
 
 ---
 
-## Project Structure
+## 🔬 Methodology
+
+### Class Imbalance Handling
+
+The 0.13% fraud rate is too severe for SMOTE alone — minority folds in 5-fold CV can contain fewer than 10 fraud samples. TrustGuard uses a **two-stage strategy**:
 
 ```
-trustguard-ai-fraud-detection
-│
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── LICENSE
-│
-├── data
-│   ├── raw
-│   │   └── (dataset not included — see dataset_link.txt)
-│   ├── processed
-│   │   └── (dataset not included beacuse the file is very large — upload some of the rows and cokumns of the preprocess data)
-│   └── dataset_link.txt
-│
-├── scripts
-│   ├── load_dataset.py
-│   ├── basic_inspection.py
-│   ├── data_cleaning.py
-│   ├── feature_engineering.py
-│   ├── preprocessing_pipeline.py
-│   ├── eda_analysis.py
-│   └── run_pipeline.py
-│   └── save_cleaned_dataset.py
-│
-├── notebooks
-│   ├── deliverable1_pipeline.ipynb
-│   └── exploratory_data_analysis.ipynb
-│
-├── images
-│   ├── transaction_volume_over_time.png
-│   ├── fraud_distribution.png
-│   ├── transaction_types.png
-│   ├── fraud_vs_normal_transaction_amounts.png
-│   ├── feature_importance.png
-│   ├── fraud_by_transaction_type.png
-│   ├── transaction_amount_distribution.png
-│   ├── correlation_heatmap.png
-│
-├── reports
-│   ├── Fraud_Detection_Deliverable 1_Report.pdf
-│  └── Fraud_Detection_Deliverable 1_Report.doc
+Stage 1 — Fraud Simulation Engine (global, before split)
+  • Sample 5% of legitimate TRANSFER & CASH_OUT transactions
+  • Set amount = oldbalanceOrg (full drain), newbalanceOrig = 0
+  • Recompute balanceDiff and amount_ratio
+  • Label injected rows as fraud
+  Result: 0.13% → 1.26% fraud rate
 
+Stage 2 — SMOTE inside ImbPipeline (per CV fold, train only)
+  • sampling_strategy = 0.3
+  • Applied AFTER train/test split, INSIDE each fold
+  • Validation fold never sees synthetic samples
+  Result: 1.26% → 23.07% fraud rate in training
 ```
+
+| Stage | Fraud Cases | Total Rows | Fraud Rate |
+|:---|:---:|:---:|:---:|
+| Original | 8,213 | 6,362,620 | 0.13% |
+| After Fraud Simulation | ~87,500 | ~6,940,000 | 1.26% |
+| After SMOTE (train folds) | ~1,600,000 | ~6,930,000 | **23.07%** |
+
+### Feature Engineering
+
+12 features used for model training (6 raw + 2 engineered + 4 one-hot):
+
+| Feature | Type | Signal |
+|:---|:---|:---|
+| `step` | Raw | Temporal position (0–743 hours) |
+| `amount` | Raw | Transaction size — higher in fraud |
+| `oldbalanceOrg` | Raw | Origin balance before |
+| `newbalanceOrig` | Raw | Drops to 0 in full-drain fraud |
+| `oldbalanceDest` | Raw | Mule accounts often start at 0 |
+| `newbalanceDest` | Raw | Spikes in fraud cases |
+| `balanceDiff` | **Engineered** | `oldbalanceOrg − newbalanceOrig − amount` — detects inconsistencies |
+| `amount_ratio` | **Engineered** | `amount / (oldbalanceOrg + 1)` — approaches 1.0 in drain attacks |
+| `type_CASH_OUT` | One-hot | Binary type indicator |
+| `type_DEBIT` | One-hot | Binary type indicator |
+| `type_PAYMENT` | One-hot | Binary type indicator |
+| `type_TRANSFER` | One-hot | Binary type indicator |
+
+### Models Trained
+
+All four models use `ImbPipeline(SMOTE → StandardScaler → Classifier)` with 5-fold stratified CV:
+
+| Model | Role | Key Hyperparameters |
+|:---|:---|:---|
+| **XGBoost** ⭐ | Deployed model | `n_estimators=300`, `learning_rate=0.05`, `max_depth=6` |
+| Random Forest | Ensemble baseline | `max_depth=12`, `n_estimators=30`, `max_samples=0.5` |
+| Neural Network | Non-linear baseline | `hidden_layer_sizes=(32,16)`, `batch_size=256`, `alpha=0.03` |
+| Logistic Regression | Linear baseline | `C=1.0`, `solver=saga` |
+
+### XAI — SHAP Explanations
+
+SHAP `TreeExplainer` decomposes each prediction into per-feature additive contributions. Top drivers:
+
+1. **`amount_ratio`** — values near 1.0 (full drain) are the strongest fraud signal
+2. **`newbalanceOrig`** — near-zero post-transaction balance confirms drain
+3. **`balanceDiff`** — inconsistencies between amount and balance change
+4. **`type_CASH_OUT` / `type_TRANSFER`** — transaction type as a gate
+5. **`amount`** — absolute size, though weaker than the ratio
+
+### RAG Pipeline
+
+| Component | Technology |
+|:---|:---|
+| Vector store | ChromaDB (`~100 chunks`) |
+| Embedding model | `sentence-transformers/all-MiniLM-L6-v2` (384-dim) |
+| Lexical retrieval | BM25 (rank-bm25) |
+| Reranker | `ms-marco-MiniLM-L-6-v2` CrossEncoder |
+| Generator | `gpt-4o-mini` (OpenAI) |
+| Regulatory corpus | 5 SBP documents (C1-Annex, C2-Annex-A, CL33-Annex-B, C10-Branchless-Banking, SME-PRs-Jan-2025) |
 
 ---
 
-## Installation
+## 📈 Results
+
+### Model Comparison — Test Set
+
+| Model | Precision | Recall | F1 | AUC-ROC | Avg Precision |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| **XGBoost** ⭐ | **0.3981** | **0.9976** | **0.5691** | **0.9995** | **0.9358** |
+| Random Forest | 0.1035 | 0.9976 | 0.1875 | 0.9995 | 0.8870 |
+| Neural Network | 0.1437 | 0.9732 | 0.2505 | 0.9983 | 0.7081 |
+| Logistic Regression | 0.0217 | 0.9860 | 0.0425 | 0.9946 | 0.5567 |
+
+### Cross-Validation — XGBoost (5-fold, mean ± std)
+
+| CV Precision | CV Recall | CV F1 | CV AUC-ROC | CV Avg Precision |
+|:---:|:---:|:---:|:---:|:---:|
+| 0.905 ± 0.035 | 1.000 ± 0.000 | 0.949 ± 0.020 | 1.000 ± 0.000 | 0.985 ± 0.004 |
+
+### Ablation Study — All 7 Conditions
+
+| ID | Condition | CV F1 | Test Recall | Test F1 | Test AP |
+|:---|:---|:---:|:---:|:---:|:---:|
+| A1 | No Fraud Simulation | 0.671 | 0.9976 | 0.6247 | 0.9363 |
+| **A2** | **Full Pipeline** ⭐ | **0.947** | **0.9976** | **0.5533** | **0.7317** |
+| B1 | No SMOTE | 0.947 | 0.9951 | 0.9132 | 0.9639 |
+| **B2** | **SMOTE ratio=0.3** ⭐ | **0.947** | **0.9976** | **0.5557** | **0.7322** |
+| B3 | SMOTE ratio=0.5 | 0.947 | 0.9976 | 0.5280 | 0.7180 |
+| C1 | No Engineered Features | 0.636 | 0.9976 | 0.1538 | 0.6061 |
+| **C2** | **With Features** ⭐ | **0.947** | **0.9976** | **0.5533** | **0.7317** |
+
+> Removing engineered features (C1) drops Test F1 by **73%**. Removing Fraud Simulation (A1) drops CV F1 by **29%**. Both are critical.
+
+### RAG Evaluation
+
+| Transaction | Fraud Prob | Risk Tier | Latency | Hallucination |
+|:---|:---:|:---:|:---:|:---:|
+| TXN-CRITICAL-001 | 97% | 🔴 CRITICAL | 6.45s | ✅ None |
+| TXN-HIGH-001 | 94% | 🔴 CRITICAL | 4.67s | ✅ None |
+| TXN-HIGH-002 | 88% | 🔴 CRITICAL | 3.40s | ✅ None |
+| TXN-MEDIUM-001 | 73% | 🟠 HIGH | 3.64s | ✅ None |
+
+Retrieval: **Avg Precision@5 = 0.855**, Term Hit Rate = 0.90, Expected doc found: **10/10**
+
+---
+
+## 🖥️ Live Dashboard
+
+**URL:** [https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+
+The dashboard has **6 pages**:
+
+| Page | What it does |
+|:---|:---|
+| **① Predict Transaction** | Enter transaction attributes → get fraud probability, risk tier, SHAP waterfall plot, and (with API key) a RAG regulatory report |
+| **② Batch CSV Analysis** | Upload a CSV of transactions → score all rows, download results |
+| **③ Dataset & Imbalance** | Interactive EDA: class distribution, fraud patterns, feature distributions, imbalance pipeline visualisation |
+| **④ Model Performance** | ROC/PR curves, confusion matrices, threshold optimisation, cost-benefit analysis, bias check |
+| **⑤ Ablation Study** | All 7 conditions across all metrics — bar chart, heatmap, delta plot, PR scatter |
+| **⑥ About** | Team info, architecture overview, links |
+
+> ⚠️ The RAG regulatory report on Page 1 requires an OpenAI API key. All other pages work without one.
+
+---
+
+## ⚡ Quick Start
+
+```bash
+# 1. Clone
+git clone https://github.com/your-username/trustguard-ai-fraud-detection.git
+cd trustguard-ai-fraud-detection
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch the dashboard
+streamlit run app.py
+```
+
+The dashboard loads the **pre-trained XGBoost model** from `outputs/deployment/model.pkl` — no data or retraining required.
+
+---
+
+## 🔧 Full Setup Guide
+
+### Prerequisites
+
+- Python 3.10+
+- pip
+- (Optional) OpenAI API key for the RAG regulatory report feature
 
 ### 1. Clone the Repository
 
@@ -130,105 +360,215 @@ cd trustguard-ai-fraud-detection
 pip install -r requirements.txt
 ```
 
-Or install manually:
+<details>
+<summary>Core dependencies (click to expand)</summary>
+
+| Package | Version | Purpose |
+|:---|:---|:---|
+| `streamlit` | 1.45.0 | Dashboard |
+| `xgboost` | 2.1.4 | Primary model |
+| `scikit-learn` | 1.5.2 | ML pipeline |
+| `imbalanced-learn` | 0.12.4 | SMOTE / ImbPipeline |
+| `shap` | ≥0.45, <0.48 | XAI explanations |
+| `chromadb` | 0.5.23 | RAG vector store |
+| `sentence-transformers` | 3.0.1 | RAG embeddings |
+| `rank-bm25` | 0.2.2 | RAG lexical retrieval |
+| `openai` | ≥1.30, <2.0 | RAG generation |
+| `pandas` | 2.2.3 | Data processing |
+| `numpy` | 1.26.4 | Numerics |
+
+</details>
+
+### 3. Configure OpenAI API Key (Optional — RAG only)
+
+Copy the secrets template and add your key:
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+cp .streamlit/secrets.example.toml .streamlit/secrets.toml
+# Edit secrets.toml and replace sk-proj-YOUR_KEY_HERE with your actual key
 ```
 
-### 3. Download the Dataset
-
-Download the PaySim dataset from [Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1) and place the CSV file in the `data/raw/` directory:
-
-```
-data/raw/PaySim - Synthetic Financial Dataset for Fraud Detection.csv
-```
-
----
-
-## Usage
-
-### Run the Full Preprocessing Pipeline
+Or set it as an environment variable:
 
 ```bash
-python scripts/run_pipeline.py
+export OPENAI_API_KEY="sk-proj-your-key-here"
 ```
 
-This will execute all pipeline stages in sequence:
-1. Load the dataset
-2. Inspect shape, types, and statistics
-3. Remove duplicates and handle outliers
-4. Encode the `type` column using LabelEncoder
-5. Scale numerical features using StandardScaler
-6. Export the processed dataset to `data/processed/processed_paysim.csv`
+> Without this key, all dashboard pages except the RAG report on Page 1 work normally.
 
-### Run EDA Only
+### 4. Download the Dataset (for retraining only)
+
+The pre-trained model is already included in `outputs/deployment/`. If you want to retrain from scratch:
+
+1. Download from [Kaggle — PaySim](https://www.kaggle.com/datasets/ealaxi/paysim1)
+2. Place the CSV at `Data/original_dataset/`
+3. Run the full training notebook:
 
 ```bash
-python scripts/eda_analysis.py
+jupyter notebook notebooks/final_deliverable_notebooks/trustguard_ai_final.ipynb
 ```
 
-### Use the Notebooks
-
-Open the notebooks in Jupyter, Google Colab or vs code:
+### 5. Run the Dashboard
 
 ```bash
-jupyter notebook notebooks/deliverable1_pipeline.ipynb
-jupyter notebook notebooks/exploratory_data_analysis.ipynb
+streamlit run app.py
+```
+
+Opens at `http://localhost:8501`
+
+### 6. Run Individual Notebooks
+
+```bash
+# EDA and preprocessing (Deliverable 1)
+jupyter notebook notebooks/deliverable_1_notebooks/exploratory_data_analysis.ipynb
+
+# Model training pipeline (Deliverable 2)
+jupyter notebook notebooks/deliverable_2_notebooks/deliverable_1_and_2_pipeline.ipynb
+
+# Final model, ablation, XAI (Deliverable 3)
+jupyter notebook notebooks/final_deliverable_notebooks/trustguard_ai_final.ipynb
+
+# RAG pipeline
+jupyter notebook notebooks/final_deliverable_notebooks/rag_system.ipynb
 ```
 
 ---
 
-## Results — Exploratory Data Analysis
+## 📁 Project Structure
 
-The EDA uncovered the following key fraud patterns in the PaySim dataset:
-
-### Transaction Volume Over Time
-![Transaction Volume Over Time](Images/Deliverable_1_images/transaction_volume_over_time.png)
-> A strong diurnal cycle is visible — transaction volumes peak every ~24 steps. Sudden spikes outside this rhythm may signal abnormal batch activity.
-
-### Fraud vs. Legitimate Class Distribution
-![Fraud Distribution](Images/Deliverable_1_images/fraud_distribution.png)
-> Only **0.13%** of transactions are fraudulent (8,213 of 6.36M). This severe imbalance means standard accuracy is a misleading metric — AUPRC and F1-score must be used.
-
-### Transaction Type Distribution
-![Transaction Types](Images/Deliverable_1_images/transaction_types_distribution.png)
-> PAYMENT and CASH_OUT are the most frequent types. However, volume alone does not reflect fraud risk.
-
-### Fraud Concentration by Transaction Type
-![Fraud by Transaction Type](Images/Deliverable_1_images/fraud_by_transaction_type.png)
-> **Fraud occurs exclusively in TRANSFER and CASH_OUT transactions.** This allows a pre-filter that eliminates ~55% of records from fraud modelling with zero loss in recall.
-
-### Transaction Amount Distribution
-![Transaction Amount Distribution](Images/Deliverable_1_images/transaction_amount_distribution.png)
-> Heavily right-skewed — most transactions are below 500K but a tail extends to ~92M. Feature scaling is essential.
-
-### Transaction Amount: Fraud vs. Legitimate
-![Fraud vs Normal Amounts](Images/Deliverable_1_images/fraud_vs_normal_transaction_amounts.png)
-> Fraudulent transactions cluster at higher amounts with a broader spread, confirming large amounts as a key fraud signal.
-
-### Feature Correlation Matrix
-![Correlation Heatmap](Images/Deliverable_1_images/correlation_heatmap.png)
-> Balance features are strongly inter-correlated. `isFlaggedFraud` shows near-zero correlation with actual fraud — it must be excluded from model features.
-
-### Feature Importance (Correlation with Fraud Label)
-![Feature Importance](Images/Deliverable_1_images/feature_importance.png)
-> `oldbalanceOrg` and `newbalanceOrig` are the strongest predictors — fraudulent transactions characteristically drain the originating account to zero (the **balance-drain signature**).
+```
+trustguard-ai-fraud-detection/
+│
+├── app.py                          # Streamlit dashboard (6 pages)
+├── rag_module.py                   # RAG pipeline: retrieval + reranking + generation
+├── requirements.txt                # All dependencies with pinned versions
+│
+├── .streamlit/
+│   ├── config.toml                 # Streamlit theme config
+│   └── secrets.example.toml       # API key template (never commit secrets.toml)
+│
+├── Data/
+│   ├── original_dataset/           # Raw PaySim CSV (not included — download from Kaggle)
+│   └── processed_data/             # Intermediate pipeline outputs
+│       ├── processed_paysim        # Cleaned + feature-engineered
+│       ├── train_original          # Pre-SMOTE training split
+│       ├── train_after_simulation  # Post fraud simulation
+│       ├── train_final_smote       # Post SMOTE (final training data)
+│       └── test_original           # Held-out test set
+│
+├── notebooks/
+│   ├── deliverable_1_notebooks/
+│   │   ├── deliverable_1_pipeline.ipynb        # Data loading, cleaning, EDA
+│   │   └── exploratory_data_analysis.ipynb     # Full EDA with 8+ visualisations
+│   ├── deliverable_2_notebooks/
+│   │   └── deliverable_1_and_2_pipeline.ipynb  # Feature engineering + model training
+│   └── final_deliverable_notebooks/
+│       ├── trustguard_ai_final.ipynb            # Full pipeline, ablation, XAI
+│       ├── rag_system.ipynb                     # RAG build + evaluation
+│       └── deployment.ipynb                     # Model export + dashboard prep
+│
+├── scripts/
+│   ├── deliverable_1_scripts/      # Modular preprocessing scripts
+│   │   ├── load_dataset.py
+│   │   ├── basic_inspection.py
+│   │   ├── data_cleaning.py
+│   │   ├── feature_engineering.py
+│   │   ├── preprocessing_pipeline.py
+│   │   ├── eda_analysis_and_visualization.py
+│   │   ├── save_cleaned_dataset.py
+│   │   └── run_pipeline.py         # Runs all stages in sequence
+│   └── deliverable_2_scripts/      # Model training scripts
+│
+├── outputs/
+│   ├── deployment/
+│   │   ├── model.pkl               # Trained XGBoost model
+│   │   ├── scaler.pkl              # Fitted StandardScaler
+│   │   ├── model_meta.json         # Model metadata + test metrics
+│   │   ├── feature_names.json      # Feature list in training order
+│   │   └── xai_shap_sample.png     # Sample SHAP waterfall plot
+│   ├── models/                     # All 4 trained model pkl files
+│   ├── metrics/                    # Per-model metrics JSON + CSV
+│   │   ├── model_comparison.json   # All 4 models, CV + test metrics
+│   │   └── hyperparameter_table.csv
+│   ├── ablation/                   # Ablation study results + 5 plots
+│   │   └── ablation_results.csv
+│   ├── plots/                      # 34 EDA, model, and evaluation plots
+│   ├── experiments/                # Raw experiment logs
+│   └── rag/                        # RAG evaluation outputs
+│       ├── retrieval_evaluation.csv
+│       ├── response_evaluation.csv
+│       └── TXN-*.txt               # Sample generated reports
+│
+├── SBP_Documents/                  # State Bank of Pakistan regulatory PDFs
+│   ├── C1-Annex.pdf               # AML/CFT regulations
+│   ├── C2-Annex-A.pdf             # Customer Due Diligence
+│   ├── CL33-Annex-B.pdf           # Reporting obligations
+│   ├── C10-Branchless-Banking-Regulations.pdf
+│   └── SME-PRs-Updtd-Jan-2025.pdf
+│
+├── chroma_db/                      # Pre-built ChromaDB vector store (SBP chunks)
+│
+├── reports/
+│   ├── Fraud_Detection_Deliverable 1_Report.pdf
+│   └── Fraud_Detection_Deliverable_2_Report.pdf
+│
+├── CONTRIBUTING.md
+├── LICENSE
+└── .gitignore
+```
 
 ---
 
-## Contributors
+## 🎓 Academic Context
 
-- Shahzeb Imran
-- Taha Nawaz
-- Ali Ahmad
+This project was developed as the final deliverable for the **Artificial Intelligence** course at:
+
+> **National University of Computer & Emerging Sciences (FAST-NUCES)**
+> Department of Data Science & Artificial Intelligence — Lahore Campus
+> Spring 2026 | Instructor: **Hajra Waheed**
+
+It spans three deliverables:
+
+| Deliverable | Scope |
+|:---|:---|
+| **Deliverable 1** | Dataset acquisition, preprocessing pipeline, EDA (8 visualisations) |
+| **Deliverable 2** | Feature engineering, model training, class imbalance handling, evaluation |
+| **Deliverable 3** | Ablation study, XAI (SHAP), RAG pipeline, Streamlit deployment |
+
+**Important:** This is an academic prototype. The PaySim dataset is synthetic. Results have not been validated on real production transaction data and should not be used as-is in any financial system.
 
 ---
 
-## Academic Integrity
+## 👨‍💻 Team
 
-This project is developed as part of an academic AI course at the **National University of Computer and Emerging Sciences (NUCES), Lahore**. All contributors are expected to fully understand the implementation and be prepared to explain the system during evaluation. AI tools may be used for assistance but not as a substitute for understanding.
+| Name | Student ID |
+|:---|:---|
+| Taha Nawaz | 23L-2644 |
+| Ali Ahmad | 23L-2619 |
+| Shahzeb Imran | 23L-2506 |
 
 ---
 
-*Department of Computer Science — NUCES Lahore | Fall 2024*
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE). Academic use, learning, and extension are encouraged. Attribution appreciated.
+
+---
+
+## 📚 References
+
+- Lopez-Rojas, E.A. et al. (2016). *PaySim: A financial mobile money simulator for fraud detection.* EMSS.
+- Chawla, N.V. et al. (2002). *SMOTE: Synthetic Minority Over-sampling Technique.* JAIR, 16, 321–357.
+- Chen, T. & Guestrin, C. (2016). *XGBoost: A Scalable Tree Boosting System.* KDD 2016.
+- Lundberg, S.M. & Lee, S.-I. (2017). *A Unified Approach to Interpreting Model Predictions.* NeurIPS 30.
+- State Bank of Pakistan. (2023–2025). *AML/CFT Regulations, Branchless Banking Regulations, SME Payment Regulations.* [sbp.org.pk](https://www.sbp.org.pk)
+
+---
+
+<div align="center">
+
+**🛡️ TrustGuard AI** — Built with purpose, explained with transparency, grounded in regulation.
+
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Click%20Here-FF4B4B?style=for-the-badge)](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+
+</div>
