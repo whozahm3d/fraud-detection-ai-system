@@ -10,7 +10,7 @@
 [![SHAP](https://img.shields.io/badge/XAI-SHAP-orange?style=for-the-badge)](https://shap.readthedocs.io)
 [![RAG](https://img.shields.io/badge/RAG-ChromaDB%20%2B%20GPT--4o--mini-7B68EE?style=for-the-badge)](https://www.trychroma.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=for-the-badge)]()
+[![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=for-the-badge)](.)
 
 <br>
 
@@ -61,6 +61,7 @@
 - [Project Structure](#-project-structure)
 - [Academic Context](#-academic-context)
 - [Team](#-team)
+- [References](#-references)
 
 ---
 
@@ -133,7 +134,7 @@ Raw PaySim CSV (6.36M rows)
 - Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
 - Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
 - 5-fold cross-validation with SMOTE applied strictly inside each fold
-- Full ablation study across 7 conditions isolating contribution of each pipeline component
+- Full ablation study across 7 conditions isolating the contribution of each pipeline component
 
 ### 🧠 Explainable AI
 - **SHAP TreeExplainer** for per-transaction waterfall plots
@@ -151,7 +152,7 @@ Raw PaySim CSV (6.36M rows)
 ### 📊 Interactive Dashboard
 - Single transaction prediction with real-time SHAP explanation
 - Batch CSV upload and scoring
-- Full EDA visualisation suite (34 plots)
+- Full EDA visualisation suite
 - Model comparison, confusion matrices, ROC/PR curves
 - Ablation study explorer
 - Regulatory report generation (requires OpenAI API key)
@@ -174,7 +175,7 @@ A multi-agent simulation calibrated against real mobile money transaction data f
 | Fraud types | CASH_OUT and TRANSFER **only** |
 | Missing values | None |
 
-> ⚠️ The raw dataset (~500MB) is not included. Download from Kaggle and place at `Data/original_dataset/`.
+> ⚠️ The raw dataset (~500MB) is not included. Download from Kaggle and place at `Data/original_dataset/` or use the dataset link provided above.
 
 ---
 
@@ -245,6 +246,11 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 4. **`type_CASH_OUT` / `type_TRANSFER`** — transaction type as a gate
 5. **`amount`** — absolute size, though weaker than the ratio
 
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/feature_importance_comparison.png" width="85%" alt="Feature Importance Comparison across all 4 models"/>
+<br><em>Feature importance comparison across all 4 trained models</em>
+</div>
+
 ### RAG Pipeline
 
 | Component | Technology |
@@ -269,6 +275,25 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 | Neural Network | 0.1437 | 0.9732 | 0.2505 | 0.9983 | 0.7081 |
 | Logistic Regression | 0.0217 | 0.9860 | 0.0425 | 0.9946 | 0.5567 |
 
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/model_comparison_all_metrics.png" width="85%" alt="Model Comparison — All Metrics"/>
+<br><em>All-metric comparison across the four trained models</em>
+</div>
+
+### ROC & Precision-Recall Curves
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/roc_pr_curves.png" width="85%" alt="ROC and Precision-Recall Curves"/>
+<br><em>ROC and Precision-Recall curves — XGBoost achieves AUC-ROC = 0.9995</em>
+</div>
+
+### Confusion Matrices — All Models
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/confusion_matrices_all_models.png" width="85%" alt="Confusion Matrices for all 4 models"/>
+<br><em>Confusion matrices for all four models on the held-out test set</em>
+</div>
+
 ### Cross-Validation — XGBoost (5-fold, mean ± std)
 
 | CV Precision | CV Recall | CV F1 | CV AUC-ROC | CV Avg Precision |
@@ -289,6 +314,13 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 
 > Removing engineered features (C1) drops Test F1 by **73%**. Removing Fraud Simulation (A1) drops CV F1 by **29%**. Both are critical.
 
+### Cost-Benefit Analysis
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/cost_benefit_analysis.png" width="85%" alt="Cost-Benefit Analysis"/>
+<br><em>Cost-benefit analysis across decision thresholds</em>
+</div>
+
 ### RAG Evaluation
 
 | Transaction | Fraud Prob | Risk Tier | Latency | Hallucination |
@@ -306,7 +338,7 @@ Retrieval: **Avg Precision@5 = 0.855**, Term Hit Rate = 0.90, Expected doc found
 
 **URL:** [https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
 
-The dashboard has **6 pages**:
+The dashboard has **6 pages**, navigated from the sidebar:
 
 | Page | What it does |
 |:---|:---|
@@ -325,7 +357,7 @@ The dashboard has **6 pages**:
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/trustguard-ai-fraud-detection.git
+git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
 cd trustguard-ai-fraud-detection
 
 # 2. Install dependencies
@@ -350,7 +382,7 @@ The dashboard loads the **pre-trained XGBoost model** from `outputs/deployment/m
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/trustguard-ai-fraud-detection.git
+git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
 cd trustguard-ai-fraud-detection
 ```
 
@@ -365,17 +397,23 @@ pip install -r requirements.txt
 
 | Package | Version | Purpose |
 |:---|:---|:---|
-| `streamlit` | 1.45.0 | Dashboard |
-| `xgboost` | 2.1.4 | Primary model |
-| `scikit-learn` | 1.5.2 | ML pipeline |
+| `streamlit` | 1.45.0 | Dashboard UI |
+| `xgboost` | 2.1.4 | Primary deployed model |
+| `scikit-learn` | 1.5.2 | ML pipeline & baselines |
 | `imbalanced-learn` | 0.12.4 | SMOTE / ImbPipeline |
 | `shap` | ≥0.45, <0.48 | XAI explanations |
 | `chromadb` | 0.5.23 | RAG vector store |
-| `sentence-transformers` | 3.0.1 | RAG embeddings |
+| `sentence-transformers` | 3.0.1 | RAG dense embeddings |
 | `rank-bm25` | 0.2.2 | RAG lexical retrieval |
-| `openai` | ≥1.30, <2.0 | RAG generation |
+| `openai` | ≥1.30, <2.0 | RAG generation (GPT-4o-mini) |
 | `pandas` | 2.2.3 | Data processing |
 | `numpy` | 1.26.4 | Numerics |
+| `scipy` | 1.13.1 | Statistical utilities |
+| `matplotlib` | 3.9.4 | Plotting |
+| `seaborn` | 0.13.2 | Statistical visualisation |
+| `joblib` | 1.4.2 | Model serialisation |
+| `psutil` | 6.1.1 | System resource monitoring |
+| `tqdm` | 4.66.4 | Progress bars |
 
 </details>
 
@@ -422,14 +460,17 @@ Opens at `http://localhost:8501`
 # EDA and preprocessing (Deliverable 1)
 jupyter notebook notebooks/deliverable_1_notebooks/exploratory_data_analysis.ipynb
 
-# Model training pipeline (Deliverable 2)
+# Full preprocessing + model training pipeline (Deliverable 2)
 jupyter notebook notebooks/deliverable_2_notebooks/deliverable_1_and_2_pipeline.ipynb
 
 # Final model, ablation, XAI (Deliverable 3)
 jupyter notebook notebooks/final_deliverable_notebooks/trustguard_ai_final.ipynb
 
-# RAG pipeline
+# RAG pipeline build + evaluation
 jupyter notebook notebooks/final_deliverable_notebooks/rag_system.ipynb
+
+# Model export + dashboard preparation
+jupyter notebook notebooks/final_deliverable_notebooks/deployment.ipynb
 ```
 
 ---
@@ -439,22 +480,29 @@ jupyter notebook notebooks/final_deliverable_notebooks/rag_system.ipynb
 ```
 trustguard-ai-fraud-detection/
 │
-├── app.py                          # Streamlit dashboard (6 pages)
-├── rag_module.py                   # RAG pipeline: retrieval + reranking + generation
-├── requirements.txt                # All dependencies with pinned versions
+├── app.py                              # Streamlit dashboard (6 pages, ~1600 lines)
+├── rag_module.py                       # RAG pipeline: retrieval + reranking + generation
+├── requirements.txt                    # All dependencies with pinned versions
+├── .python-version                     # Python 3.10+ specifier
+├── LICENSE                             # MIT License
+├── CONTRIBUTING.md                     # Contribution guidelines
 │
 ├── .streamlit/
-│   ├── config.toml                 # Streamlit theme config
-│   └── secrets.example.toml       # API key template (never commit secrets.toml)
+│   ├── config.toml                     # Streamlit theme config
+│   └── secrets.example.toml           # API key template (never commit secrets.toml)
+│
+├── .devcontainer/
+│   └── devcontainer.json              # GitHub Codespaces / VS Code dev container config
 │
 ├── Data/
-│   ├── original_dataset/           # Raw PaySim CSV (not included — download from Kaggle)
-│   └── processed_data/             # Intermediate pipeline outputs
-│       ├── processed_paysim        # Cleaned + feature-engineered
-│       ├── train_original          # Pre-SMOTE training split
-│       ├── train_after_simulation  # Post fraud simulation
-│       ├── train_final_smote       # Post SMOTE (final training data)
-│       └── test_original           # Held-out test set
+│   ├── original_dataset/
+│   │   └── Paysim_dataset             # Raw PaySim CSV placeholder (not included — download from Kaggle)
+│   └── processed_data/
+│       ├── processed_paysim           # Cleaned + feature-engineered dataset
+│       ├── train_original             # Pre-SMOTE training split
+│       ├── train_after_simulation     # Post fraud simulation
+│       ├── train_final_smote          # Post SMOTE (final training data)
+│       └── test_original              # Held-out test set
 │
 ├── notebooks/
 │   ├── deliverable_1_notebooks/
@@ -468,53 +516,94 @@ trustguard-ai-fraud-detection/
 │       └── deployment.ipynb                     # Model export + dashboard prep
 │
 ├── scripts/
-│   ├── deliverable_1_scripts/      # Modular preprocessing scripts
+│   ├── deliverable_1_scripts/          # Modular preprocessing scripts
 │   │   ├── load_dataset.py
 │   │   ├── basic_inspection.py
 │   │   ├── data_cleaning.py
 │   │   ├── feature_engineering.py
+│   │   ├── fraud_simulation_engine.py
 │   │   ├── preprocessing_pipeline.py
-│   │   ├── eda_analysis_and_visualization.py
+│   │   ├── scaling_dataset.py
+│   │   ├── smote.py
+│   │   ├── train_test_split.py
 │   │   ├── save_cleaned_dataset.py
-│   │   └── run_pipeline.py         # Runs all stages in sequence
-│   └── deliverable_2_scripts/      # Model training scripts
+│   │   ├── libraries_loaded.py
+│   │   └── eda_analysis_and_visualization.py
+│   └── deliverable_2_scripts/          # Model training & evaluation scripts
+│       ├── logistic_regression.py
+│       ├── random_forest.py
+│       ├── nueral_networks.py
+│       ├── xgboost_regression.py
+│       ├── compare_models.py
+│       ├── hyperparameter_config.py
+│       ├── kfold_validation.py
+│       ├── feature_importance.py
+│       ├── roc_curves.py
+│       ├── visualize_confusion_matrix.py
+│       ├── error_analysis.py
+│       ├── bias_check.py
+│       └── ablation_study.py
 │
 ├── outputs/
-│   ├── deployment/
-│   │   ├── model.pkl               # Trained XGBoost model
-│   │   ├── scaler.pkl              # Fitted StandardScaler
-│   │   ├── model_meta.json         # Model metadata + test metrics
-│   │   ├── feature_names.json      # Feature list in training order
-│   │   └── xai_shap_sample.png     # Sample SHAP waterfall plot
-│   ├── models/                     # All 4 trained model pkl files
-│   ├── metrics/                    # Per-model metrics JSON + CSV
-│   │   ├── model_comparison.json   # All 4 models, CV + test metrics
-│   │   └── hyperparameter_table.csv
-│   ├── ablation/                   # Ablation study results + 5 plots
-│   │   └── ablation_results.csv
-│   ├── plots/                      # 34 EDA, model, and evaluation plots
-│   ├── experiments/                # Raw experiment logs
-│   └── rag/                        # RAG evaluation outputs
+│   ├── deployment/                     # Artefacts loaded by app.py at runtime
+│   │   ├── model.pkl                  # Trained XGBoost model
+│   │   ├── scaler.pkl                 # Fitted StandardScaler
+│   │   ├── model_meta.json            # Model metadata + test metrics
+│   │   ├── feature_names.json         # Feature list in training order
+│   │   └── model_comparison_deploy.png
+│   ├── models/                         # All 4 trained model pkl files
+│   │   ├── logistic_regression.pkl
+│   │   ├── neural_network.pkl
+│   │   ├── random_forest.pkl
+│   │   ├── xgboost.pkl
+│   │   └── scaler.pkl
+│   ├── metrics/                        # Per-model metrics JSON + CSV
+│   │   ├── model_comparison.json      # All 4 models, CV + test metrics
+│   │   ├── model_comparison.csv
+│   │   ├── hyperparameter_table.csv
+│   │   ├── logistic_regression_metrics.{json,csv}
+│   │   ├── neural_network_metrics.{json,csv}
+│   │   ├── random_forest_metrics.{json,csv}
+│   │   └── xgboost_metrics.{json,csv}
+│   ├── ablation/                       # Ablation study results + plots
+│   │   ├── ablation_results.csv
+│   │   ├── ablation_study.png
+│   │   ├── ablation_heatmap.png
+│   │   ├── ablation_delta.png
+│   │   ├── ablation_pr_scatter.png
+│   │   └── ablation_smote_trend.png
+│   ├── plots/                          # Full set of EDA, model, and evaluation plots
+│   ├── experiments/                    # Raw experiment logs
+│   │   ├── experiment_results.csv
+│   │   └── cleaned_experiment_results.csv
+│   └── rag/                            # RAG evaluation outputs
 │       ├── retrieval_evaluation.csv
 │       ├── response_evaluation.csv
-│       └── TXN-*.txt               # Sample generated reports
+│       ├── TXN-CRITICAL-001.txt
+│       ├── TXN-HIGH-001.txt
+│       ├── TXN-HIGH-002.txt
+│       └── TXN-MEDIUM-001.txt
 │
-├── SBP_Documents/                  # State Bank of Pakistan regulatory PDFs
-│   ├── C1-Annex.pdf               # AML/CFT regulations
-│   ├── C2-Annex-A.pdf             # Customer Due Diligence
-│   ├── CL33-Annex-B.pdf           # Reporting obligations
+├── Images/
+│   ├── Deliverable_1_images/           # EDA & preprocessing plots
+│   ├── deliverable_2_images/           # Model training & evaluation plots
+│   └── final_deliverable_images/       # Full final report plots (used in README)
+│
+├── SBP_Documents/                      # State Bank of Pakistan regulatory PDFs
+│   ├── C1-Annex.pdf                   # AML/CFT regulations
+│   ├── C2-Annex-A.pdf                 # Customer Due Diligence
+│   ├── CL33-Annex-B.pdf               # Reporting obligations
 │   ├── C10-Branchless-Banking-Regulations.pdf
 │   └── SME-PRs-Updtd-Jan-2025.pdf
 │
-├── chroma_db/                      # Pre-built ChromaDB vector store (SBP chunks)
+├── chroma_db/                          # Pre-built ChromaDB vector store (SBP chunks)
+│   └── chroma.sqlite3
 │
-├── reports/
-│   ├── Fraud_Detection_Deliverable 1_Report.pdf
-│   └── Fraud_Detection_Deliverable_2_Report.pdf
-│
-├── CONTRIBUTING.md
-├── LICENSE
-└── .gitignore
+└── reports/
+    ├── Fraud_Detection_Deliverable 1_Report.pdf
+    ├── Fraud_Detection_Deliverable_2_Report.pdf
+    ├── Fraud_Detection_Final_Report.pdf
+    └── Fraud_Detection_Final_Report.tex   # LaTeX source for final report
 ```
 
 ---
@@ -570,5 +659,6 @@ This project is licensed under the [MIT License](LICENSE). Academic use, learnin
 **🛡️ TrustGuard AI** — Built with purpose, explained with transparency, grounded in regulation.
 
 [![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Click%20Here-FF4B4B?style=for-the-badge)](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-whozahm3d-181717?style=for-the-badge&logo=github)](https://github.com/whozahm3d/trustguard-ai-fraud-detection)
 
 </div>
