@@ -77,7 +77,7 @@ Financial fraud causes trillions of dollars in annual losses globally. Detecting
 
 3. **RAG Policy Assistant** — A hybrid retrieval system (BM25 + dense vectors + CrossEncoder reranking) retrieves relevant SBP regulatory provisions and feeds them to GPT-4o-mini, generating grounded regulatory risk reports with zero hallucinations.
 
-> **Academic note:** This is a final-year university AI course project built on the PaySim synthetic dataset. Results are strong but not validated on real-world production transaction data.
+> **Academic note:** This is a thirs-year university AI course project built on the PaySim synthetic dataset. Results are strong but not validated on real-world production transaction data.
 
 ---
 
@@ -133,7 +133,7 @@ Raw PaySim CSV (6.36M rows)
 ### 🔍 Fraud Detection
 - Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
 - Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
-- 5-fold cross-validation with SMOTE applied strictly inside each fold
+- 3-fold cross-validation with SMOTE applied strictly inside each fold
 - Full ablation study across 7 conditions isolating the contribution of each pipeline component
 
 ### 🧠 Explainable AI
@@ -147,7 +147,7 @@ Raw PaySim CSV (6.36M rows)
 - **CrossEncoder reranking** (ms-marco-MiniLM-L-6-v2) for passage quality scoring
 - **GPT-4o-mini** generation grounded in SBP regulatory documents
 - Zero hallucinations across all evaluated transactions
-- Average retrieval Precision@5 = 0.855 across 10 regulatory queries
+- Average retrieval Precision = 0.855 across 10 regulatory queries
 
 ### 📊 Interactive Dashboard
 - Single transaction prediction with real-time SHAP explanation
