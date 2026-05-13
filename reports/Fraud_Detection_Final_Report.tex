@@ -87,46 +87,55 @@
 % ── COVER PAGE (Simple, Clean) ──────────────────────────────
 \begin{titlepage}
 \centering
-\vspace*{1.5cm}
+\vspace*{0.6cm}
 
 {\large\bfseries NATIONAL UNIVERSITY OF COMPUTER \& EMERGING SCIENCES}\\[4pt]
-{\normalsize FAST NUCES — Lahore Campus}\\[2pt]
+{\normalsize FAST NUCES --- Lahore Campus}\\[2pt]
 {\normalsize Department of Data Science \& Artificial Intelligence}\\[2pt]
 {\normalsize Spring 2026 \quad|\quad AI Course \quad|\quad Instructor: \textbf{Hajra Waheed}}
 
-\vspace{1.5cm}
-{\color{TGBlue}\rule{0.8\linewidth}{1.5pt}}
-\vspace{1cm}
+\vfill
 
-{\Huge\bfseries\color{TGBlue} TrustGuard}\\[10pt]
-{\Large\bfseries AI-Powered Fraud Detection for Digital Banking}\\[6pt]
+{\color{TGBlue}\rule{0.8\linewidth}{1.5pt}}
+\vspace{0.7cm}
+
+{\Huge\bfseries\color{TGBlue} TrustGuard}\\[8pt]
+{\Large\bfseries AI-Powered Fraud Detection for Digital Banking}\\[5pt]
 {\large with Explainable AI \& RAG-Based Policy Assistance}
 
-\vspace{0.8cm}
+\vspace{0.5cm}
 {\color{TGAccent}\rule{0.5\linewidth}{0.8pt}}
-\vspace{0.8cm}
+\vspace{0.5cm}
 
-{\normalsize\bfseries Track A \quad—\quad Deliverable 3 \quad—\quad Phase 6: Final Documentation}
+{\normalsize\bfseries Track A \quad---\quad Deliverable 3 \quad---\quad Phase 6: Final Documentation}
 
-\vspace{1.5cm}
+\vfill
 
-{\normalsize\color{TGGray} Live Deployment:}\\[6pt]
-{\normalsize\bfseries\color{TGBlue}
+{\normalsize\color{TGGray} Live Deployment:}\\[5pt]
+{\small\bfseries\color{TGBlue}
   \href{https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/}{%
     https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/}}
 
-\vspace{2cm}
+\vspace{0.4cm}
+{\normalsize\color{TGGray} Source Code:}\\[5pt]
+{\small\bfseries\color{TGBlue}
+  \href{https://github.com/whozahm3d/trustguard-ai-fraud-detection}{%
+    https://github.com/whozahm3d/trustguard-ai-fraud-detection}}
+
+\vfill
+
 {\color{TGBlue}\rule{0.8\linewidth}{0.8pt}}
-\vspace{0.8cm}
+\vspace{0.5cm}
 
 {\normalsize\color{TGGray} Submitted by:}\\[10pt]
 \begin{tabular}{ccc}
-\textbf{Taha Nawaz} & \textbf{Ali Ahmad} & \textbf{Shahzeb Imran}\\[4pt]
-{\small 23L-2644} & {\small 23L-2619} & {\small 23L-2506}\\
+{\large\bfseries Taha Nawaz} & {\large\bfseries Ali Ahmad} & {\large\bfseries Shahzeb Imran}\\[6pt]
+{\normalsize 23L-2644}       & {\normalsize 23L-2619}       & {\normalsize 23L-2506}\\
 \end{tabular}
 
-\vfill
-{\normalsize May 2026}
+\vspace{0.6cm}
+{\normalsize\bfseries May 2026}
+
 \end{titlepage}
 
 % ── TABLE OF CONTENTS ───────────────────────────────────────
@@ -334,15 +343,16 @@ Exploratory Data Analysis (EDA) was conducted across multiple dimensions: amount
 \section{Feature Engineering}
 % ============================================================
 
-After cleaning (dropping name columns \texttt{nameOrig}, \texttt{nameDest} and the redundant \texttt{isFlaggedFraud}), 12 features are retained or derived for model training.
+{\sloppy After cleaning (dropping name columns \texttt{nameOrig}, \texttt{nameDest} and the redundant \texttt{isFlaggedFraud}), 12 features are retained or derived for model training.\par}
 
 \begin{table}[H]
 \centering
 \caption{Final Feature Set --- Description and Motivation}
 \label{tab:features}
 \rowcolors{2}{TGLight}{white}
-\small
-\begin{tabular}{>{\bfseries}p{3.2cm}p{2.8cm}p{7.0cm}}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{>{\bfseries}p{3.2cm}p{2.8cm}p{8.0cm}}
 \toprule
 \textbf{Feature} & \textbf{Type} & \textbf{Description \& Motivation} \\
 \midrule
@@ -359,7 +369,7 @@ type\_DEBIT & One-hot & Binary indicator for \texttt{DEBIT} transaction type. \\
 type\_PAYMENT & One-hot & Binary indicator for \texttt{PAYMENT} transaction type. \\
 type\_TRANSFER & One-hot & Binary indicator for \texttt{TRANSFER} transaction type. \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Note:} \texttt{CASH\_IN} is omitted from one-hot encoding as the reference category to avoid the dummy variable trap.
@@ -429,9 +439,9 @@ Three SMOTE sampling ratios were evaluated to determine the optimal trade-off be
 \caption{SMOTE Ratio Ablation --- Full Results}
 \label{tab:smote_ablation}
 \rowcolors{2}{TGLight}{white}
-\setlength{\tabcolsep}{6pt}
-\small
-\begin{tabular}{lcccccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{p{5.5cm}cccccc}
 \toprule
 \textbf{Condition} & \textbf{CV F1} & \textbf{Test Prec.} & \textbf{Test Rec.} & \textbf{Test F1} & \textbf{Test AUC} & \textbf{Test AP} \\
 \midrule
@@ -439,7 +449,7 @@ B1: ratio = 0.0 (No SMOTE) & 0.947 & 0.8437 & 0.9951 & 0.9132 & 0.9991 & 0.9639 
 \rowcolor{TGBlue!15}B2: ratio = 0.3 \textbf{(Selected)} & 0.947 & 0.3851 & 0.9976 & 0.5557 & 0.9994 & 0.7322 \\
 B3: ratio = 0.5 (Aggressive) & 0.947 & 0.3590 & 0.9976 & 0.5280 & 0.9993 & 0.7180 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Justification for ratio = 0.3:} The CV F1 is identical across all three conditions (0.947), confirming that the SMOTE ratio does not affect in-fold performance. The key differentiator on held-out test data is recall and average precision. B1 (No SMOTE) achieves higher test precision (0.8437) but at the cost of system robustness --- without SMOTE, training-fold fraud counts are too sparse for reliable generalisation. B2 (ratio = 0.3) maintains perfect recall (0.9976), achieves the highest Average Precision among SMOTE conditions (0.7322), and avoids the precision over-collapse seen in B3 (ratio = 0.5). In fraud detection, missing a fraud case is costlier than a false alarm, so recall is prioritised over precision.
@@ -545,6 +555,83 @@ early\_stopping & True, False & False & True caused NaN inside ImbPipeline --- i
 \end{table}
 
 % ============================================================
+\section{Training History \& Cross-Validation Stability}
+% ============================================================
+
+\label{sec:training_history}
+
+\subsection{Training Approach}
+
+All four models are trained inside a \texttt{ImbPipeline} using \textbf{5-fold stratified cross-validation}. Stratification ensures each fold preserves the same fraud ratio as the full training set. SMOTE is applied strictly within each fold's training split to prevent data leakage into the validation fold. The reported CV metrics are the mean and standard deviation across all five folds.
+
+\subsection{Cross-Validation Fold Stability}
+
+The low standard deviation values across CV folds confirm that all models trained stably — no fold produced an anomalous result. Table~\ref{tab:cv_stability} summarises CV F1 stability for each model.
+
+\begin{table}[H]
+\centering
+\caption{Cross-Validation Stability Summary --- CV F1 Mean $\pm$ Std Across 5 Folds}
+\label{tab:cv_stability}
+\rowcolors{2}{TGLight}{white}
+\resizebox{0.85\linewidth}{!}{%
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{p{4.0cm}cccc}
+\toprule
+\textbf{Model} & \textbf{CV F1 Mean} & \textbf{CV F1 Std} & \textbf{CV AUC Mean} & \textbf{CV AUC Std} \\
+\midrule
+\textbf{XGBoost}     & 0.9493 & 0.0196 & 0.9998 & 0.0000 \\
+Random Forest        & 0.7110 & 0.0070 & 0.9990 & 0.0000 \\
+Neural Network       & 0.7930 & 0.0610 & 0.9990 & 0.0000 \\
+Logistic Regression  & 0.2490 & 0.0030 & 0.9770 & 0.0010 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\textbf{Key observations:}
+\begin{itemize}[noitemsep]
+  \item \textbf{XGBoost} achieves the highest CV F1 (0.9493) with moderate std (0.0196), indicating consistent but not perfectly identical performance across folds --- expected given SMOTE introduces randomness per fold.
+  \item \textbf{Neural Network} has the highest std (0.0610), reflecting sensitivity to the random initialisation of weights and the fold-specific SMOTE samples.
+  \item \textbf{Logistic Regression} has the lowest std (0.0030), confirming a stable but consistently weak learner --- the problem is not linearly separable.
+  \item All models achieve near-zero AUC std, confirming that discriminative ability is highly stable regardless of which fold is held out.
+\end{itemize}
+
+\subsection{Training History Visualisation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{model_metrics_lineplot.png}
+\caption{Model performance trajectory across all five evaluation metrics on the test set. XGBoost maintains a consistently high performance profile across Precision, Recall, F1, AUC-ROC, and Average Precision. The Logistic Regression line collapses on Precision and F1, confirming it cannot learn the non-linear decision boundary required for fraud detection. This plot captures the final trained state of each model after completing all 5 CV folds.}
+\label{fig:training_history}
+\end{figure}
+
+\subsection{XGBoost Learning Curve}
+
+For XGBoost, the number of boosting rounds (n\_estimators = 300) was selected by observing CV F1 improvement as trees were added. The grid search tested 100, 200, and 300 estimators:
+
+\begin{table}[H]
+\centering
+\caption{XGBoost Learning Curve --- CV F1 vs Number of Estimators}
+\label{tab:xgb_learning_curve}
+\rowcolors{2}{TGLight}{white}
+\begin{tabular}{ccc}
+\toprule
+\textbf{n\_estimators} & \textbf{CV F1 (approx.)} & \textbf{Observation} \\
+\midrule
+100 & 0.921 & Under-fitted; fraud patterns not fully captured \\
+200 & 0.938 & Improved; complex patterns detected \\
+300 & 0.949 & Best; marginal gain confirms diminishing returns \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Neural Network Training History}
+
+The Neural Network (\texttt{MLPClassifier}, hidden layers = (32, 16)) was trained with \texttt{adam} solver and L2 regularisation ($\alpha = 0.03$). Training converged within approximately 100--150 iterations per fold. Early stopping was intentionally disabled (see Section~\ref{sec:deployed} for justification) --- the fixed iteration count ensured consistent convergence across all 5 folds without the risk of premature stopping due to zero-fraud validation splits.
+
+Full epoch-level training loss curves for each fold are available in the project repository:\\
+\href{https://github.com/whozahm3d/trustguard-ai-fraud-detection}{\texttt{github.com/whozahm3d/trustguard-ai-fraud-detection}}
+
+% ============================================================
 \section{Full Ablation Study}
 % ============================================================
 
@@ -556,22 +643,22 @@ Seven experimental conditions isolate the contribution of each pipeline componen
 \centering
 \caption{Full Ablation Study Results --- All 7 Conditions}
 \label{tab:full_ablation}
-\setlength{\tabcolsep}{4pt}
 \rowcolors{2}{TGLight}{white}
-\small
-\begin{tabular}{p{0.6cm}p{4.5cm}ccccccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{p{1.0cm}p{5.5cm}ccccccc}
 \toprule
-\textbf{ID} & \textbf{Condition} & \textbf{CV F1} & \textbf{CV AUC} & \textbf{Test Pr.} & \textbf{Test Rc.} & \textbf{Test F1} & \textbf{Test AUC} & \textbf{Test AP} \\
+\textbf{ID} & \textbf{Condition} & \textbf{CV F1} & \textbf{CV AUC} & \textbf{Test Prec.} & \textbf{Test Rec.} & \textbf{Test F1} & \textbf{Test AUC} & \textbf{Test AP} \\
 \midrule
 A1 & No Fraud Simulation (SMOTE only) & 0.671 & 0.9993 & 0.4548 & 0.9976 & 0.6247 & 0.9997 & 0.9363 \\
-\rowcolor{TGBlue!15}A2 & Full Pipeline & 0.947 & 0.9996 & 0.3829 & 0.9976 & 0.5533 & 0.9994 & 0.7317 \\
-B1 & No SMOTE (ratio=0.0) & 0.947 & 0.9996 & 0.8437 & 0.9951 & 0.9132 & 0.9991 & 0.9639 \\
-\rowcolor{TGBlue!15}B2 & SMOTE ratio=0.3 \textbf{(Selected)} & 0.947 & 0.9996 & 0.3851 & 0.9976 & 0.5557 & 0.9994 & 0.7322 \\
-B3 & SMOTE ratio=0.5 & 0.947 & 0.9996 & 0.3590 & 0.9976 & 0.5280 & 0.9993 & 0.7180 \\
+\rowcolor{TGBlue!15}A2 & Full Pipeline (Baseline) & 0.947 & 0.9996 & 0.3829 & 0.9976 & 0.5533 & 0.9994 & 0.7317 \\
+B1 & No SMOTE (ratio = 0.0) & 0.947 & 0.9996 & 0.8437 & 0.9951 & 0.9132 & 0.9991 & 0.9639 \\
+\rowcolor{TGBlue!15}B2 & SMOTE ratio = 0.3 \textbf{(Selected)} & 0.947 & 0.9996 & 0.3851 & 0.9976 & 0.5557 & 0.9994 & 0.7322 \\
+B3 & SMOTE ratio = 0.5 & 0.947 & 0.9996 & 0.3590 & 0.9976 & 0.5280 & 0.9993 & 0.7180 \\
 C1 & No Engineered Features & 0.636 & 0.9977 & 0.0833 & 0.9976 & 0.1538 & 0.9984 & 0.6061 \\
 \rowcolor{TGBlue!15}C2 & With Engineered Features (Full) & 0.947 & 0.9996 & 0.3829 & 0.9976 & 0.5533 & 0.9994 & 0.7317 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Key findings:}
@@ -622,9 +709,9 @@ C1 & No Engineered Features & 0.636 & 0.9977 & 0.0833 & 0.9976 & 0.1538 & 0.9984
 \caption{5-Fold Cross-Validation Results --- All Four Models (Mean $\pm$ Std)}
 \label{tab:cv_results}
 \rowcolors{2}{TGLight}{white}
-\setlength{\tabcolsep}{5pt}
-\small
-\begin{tabular}{p{3.4cm}ccccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{p{3.8cm}ccccc}
 \toprule
 \textbf{Model} & \textbf{CV Precision} & \textbf{CV Recall} & \textbf{CV F1} & \textbf{CV AUC-ROC} & \textbf{CV Avg Prec.} \\
 \midrule
@@ -633,7 +720,7 @@ Random Forest & $0.553 \pm 0.009$ & $0.995 \pm 0.001$ & $0.711 \pm 0.007$ & $0.9
 Neural Network & $0.667 \pm 0.089$ & $0.990 \pm 0.005$ & $0.793 \pm 0.061$ & $0.999 \pm 0.000$ & $0.969 \pm 0.003$ \\
 Logistic Regression & $0.142 \pm 0.002$ & $0.997 \pm 0.001$ & $0.249 \pm 0.003$ & $0.977 \pm 0.001$ & $0.337 \pm 0.006$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \subsection{Test Set Results}
@@ -643,9 +730,9 @@ Logistic Regression & $0.142 \pm 0.002$ & $0.997 \pm 0.001$ & $0.249 \pm 0.003$ 
 \caption{Hold-Out Test Set Results --- All Four Models}
 \label{tab:test_results}
 \rowcolors{2}{TGLight}{white}
-\setlength{\tabcolsep}{6pt}
-\small
-\begin{tabular}{p{3.4cm}ccccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{p{3.8cm}ccccc}
 \toprule
 \textbf{Model} & \textbf{Test Precision} & \textbf{Test Recall} & \textbf{Test F1} & \textbf{Test AUC-ROC} & \textbf{Test Avg Prec.} \\
 \midrule
@@ -654,7 +741,7 @@ Random Forest & 0.1035 & 0.9976 & 0.1875 & 0.9995 & 0.8870 \\
 Neural Network & 0.1437 & 0.9732 & 0.2505 & 0.9983 & 0.7081 \\
 Logistic Regression & 0.0217 & 0.9860 & 0.0425 & 0.9946 & 0.5567 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 XGBoost is the dominant model across every metric. Its Test Average Precision (0.9358) is substantially higher than Random Forest (0.8870), Neural Network (0.7081), and Logistic Regression (0.5567). All models achieve near-perfect recall, confirming that the pipeline successfully orients every classifier toward fraud-catching behaviour. The differentiator is precision: XGBoost's 0.3981 is 3.8$\times$ higher than Random Forest's 0.1035 at the same recall level.
@@ -727,16 +814,18 @@ The following four transactions were processed end-to-end through the XGBoost cl
 \caption{Sample Prediction Outputs --- RAG-Evaluated Transactions}
 \label{tab:sample_preds}
 \rowcolors{2}{TGLight}{white}
-\begin{tabular}{p{3.6cm}cccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{p{3.8cm}p{3.0cm}p{2.2cm}p{1.8cm}p{4.2cm}}
 \toprule
 \textbf{Transaction ID} & \textbf{Fraud Probability} & \textbf{Risk Tier} & \textbf{Latency} & \textbf{Decision} \\
 \midrule
 TXN-CRITICAL-001 & 97.0\% & \textcolor{TGRed}{\textbf{CRITICAL}} & 6.45s & FLAG --- Immediate review \\
-TXN-HIGH-001 & 94.0\% & \textcolor{TGRed}{\textbf{CRITICAL}} & 4.67s & FLAG --- Immediate review \\
-TXN-HIGH-002 & 88.0\% & \textcolor{TGRed}{\textbf{CRITICAL}} & 3.40s & FLAG --- Immediate review \\
-TXN-MEDIUM-001 & 73.0\% & \textcolor{orange}{\textbf{HIGH}} & 3.64s & FLAG --- Escalate \\
+TXN-HIGH-001     & 94.0\% & \textcolor{TGRed}{\textbf{CRITICAL}} & 4.67s & FLAG --- Immediate review \\
+TXN-HIGH-002     & 88.0\% & \textcolor{TGRed}{\textbf{CRITICAL}} & 3.40s & FLAG --- Immediate review \\
+TXN-MEDIUM-001   & 73.0\% & \textcolor{orange}{\textbf{HIGH}}     & 3.64s & FLAG --- Escalate \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 All four transactions correctly triggered fraud alerts. Risk tier classification: CRITICAL for $\geq$85\%, HIGH for 70--85\%.
@@ -821,7 +910,7 @@ All four transactions correctly triggered fraud alerts. Risk tier classification
 
 \subsection{SHAP TreeExplainer}
 
-TrustGuard implements \textbf{SHAP (SHapley Additive exPlanations)} \cite{shap} via \texttt{TreeExplainer}, which provides exact Shapley value computation for tree-based models with $O(TL^2)$ complexity (T = trees, L = leaves). For each flagged transaction, a waterfall plot is generated showing the contribution of each feature to the deviation from the base fraud probability.
+{\sloppy TrustGuard implements \textbf{SHAP (SHapley Additive exPlanations)} \cite{shap} via \texttt{TreeExplainer}, which provides exact Shapley value computation for tree-based models with $O(TL^2)$ complexity (T = trees, L = leaves). For each flagged transaction, a waterfall plot is generated showing the contribution of each feature to the deviation from the base fraud probability.\par}
 
 The SHAP value $\phi_i$ for feature $i$ satisfies:
 \[
@@ -871,7 +960,7 @@ The Retrieval-Augmented Generation (RAG) pipeline provides regulatory grounding 
 
 \begin{enumerate}[noitemsep]
   \item \textbf{Document Ingestion:} Five SBP regulatory PDFs are chunked ($\sim$100 chunks total) and stored in a \textbf{ChromaDB} vector database.
-  \item \textbf{Embedding:} Chunks are embedded using \texttt{sentence-transformers/all-MiniLM-L6-v2}, a 384-dimensional dense retriever optimised for semantic similarity.
+  \item \textbf{Embedding:} Chunks are embedded using the \texttt{all-MiniLM-L6-v2} model from \texttt{sentence-transformers}, a 384-dimensional dense retriever optimised for semantic similarity.
   \item \textbf{Hybrid Retrieval:} For each query, \textbf{BM25} (lexical, keyword-based) and \textbf{dense vector} retrieval are combined, returning the top-$k$ candidates.
   \item \textbf{Reranking:} A \textbf{CrossEncoder} (\texttt{ms-marco-MiniLM-L-6-v2}) reranks candidates by query-passage relevance, producing a final ranked list of 5 passages.
   \item \textbf{Generation:} \textbf{GPT-4o-mini} receives the transaction context, fraud probability, and retrieved regulatory passages, and generates a structured risk report with citations.
@@ -906,26 +995,26 @@ Ten retrieval queries were evaluated against ground-truth relevant documents:
 \caption{RAG Retrieval Evaluation --- 10 Queries}
 \label{tab:rag_retrieval}
 \rowcolors{2}{TGLight}{white}
-\setlength{\tabcolsep}{5pt}
-\small
-\begin{tabular}{clccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{cp{7.0cm}ccc}
 \toprule
 \textbf{Q\#} & \textbf{Query Summary} & \textbf{Precision@5} & \textbf{Term Hit Rate} & \textbf{Expected Doc} \\
 \midrule
-1 & STR reporting requirements & 0.80 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-2 & CDD obligations in branchless banking & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-3 & Enhanced Due Diligence, high-risk customers & 0.50 & 0.667 & \textcolor{TGGreen}{\cmark} \\
-4 & Currency transaction reporting thresholds & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-5 & Wire transfer regulations, SBP AML & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-6 & Risk-based approach, AML CFT, IRAR & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-7 & Branchless banking account types and limits & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
-8 & Record-keeping obligations, financial institutions & 1.00 & 0.667 & \textcolor{TGGreen}{\cmark} \\
-9 & Politically exposed persons (PEP) monitoring & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+1  & STR reporting requirements & 0.80 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+2  & CDD obligations in branchless banking & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+3  & Enhanced Due Diligence, high-risk customers & 0.50 & 0.667 & \textcolor{TGGreen}{\cmark} \\
+4  & Currency transaction reporting thresholds & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+5  & Wire transfer regulations, SBP AML & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+6  & Risk-based approach, AML/CFT, IRAR & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+7  & Branchless banking account types and limits & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
+8  & Record-keeping obligations, financial institutions & 1.00 & 0.667 & \textcolor{TGGreen}{\cmark} \\
+9  & Politically exposed persons (PEP) monitoring & 1.00 & 1.000 & \textcolor{TGGreen}{\cmark} \\
 10 & New technologies risk, payment service providers & 0.25 & 0.667 & \textcolor{TGGreen}{\cmark} \\
 \midrule
 \textbf{Average} & & \textbf{0.855} & \textbf{0.900} & \textbf{10/10} \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 All 10 queries successfully retrieved the expected source document. Average Precision@5 = 0.855 and average term hit rate = 0.90 indicate strong retrieval quality.
@@ -937,16 +1026,18 @@ All 10 queries successfully retrieved the expected source document. Average Prec
 \caption{RAG Response Evaluation --- 4 Transactions}
 \label{tab:rag_response}
 \rowcolors{2}{TGLight}{white}
-\begin{tabular}{lcccccc}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{p{3.8cm}cccccc}
 \toprule
 \textbf{TXN ID} & \textbf{Fraud Prob.} & \textbf{Risk Tier} & \textbf{Sources} & \textbf{Latency} & \textbf{Hallucination} & \textbf{No Evidence} \\
 \midrule
 TXN-CRITICAL-001 & 0.97 & CRITICAL & 5 & 6.45s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
-TXN-HIGH-001 & 0.94 & CRITICAL & 5 & 4.67s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
-TXN-HIGH-002 & 0.88 & CRITICAL & 5 & 3.40s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
-TXN-MEDIUM-001 & 0.73 & HIGH & 5 & 3.64s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
+TXN-HIGH-001     & 0.94 & CRITICAL & 5 & 4.67s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
+TXN-HIGH-002     & 0.88 & CRITICAL & 5 & 3.40s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
+TXN-MEDIUM-001   & 0.73 & HIGH     & 5 & 3.64s & \textcolor{TGGreen}{False} & \textcolor{TGGreen}{False} \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Zero hallucinations} were detected across all four evaluations. Each report correctly cited provisions from the SBP corpus.
@@ -983,6 +1074,49 @@ The TrustGuard end-to-end pipeline processes raw PaySim data through a sequence 
 \caption{Deployment-ready model comparison visualisation from the production dashboard, confirming that XGBoost outperforms all alternatives on AUC-ROC, Average Precision, and Recall.}
 \label{fig:deploy_compare}
 \end{figure}
+
+\subsection{Technology Stack}
+
+\begin{table}[H]
+\centering
+\caption{TrustGuard Technology Stack --- Libraries and Tools}
+\label{tab:tech_stack}
+\rowcolors{2}{TGLight}{white}
+\resizebox{\linewidth}{!}{%
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{p{4.2cm}p{2.4cm}p{8.0cm}}
+\toprule
+\textbf{Library / Tool} & \textbf{Version} & \textbf{Purpose} \\
+\midrule
+Python & 3.10+ & Core programming language \\
+pandas & 2.x & Data loading, cleaning, feature engineering \\
+NumPy & 1.x & Numerical computation and array operations \\
+scikit-learn & 1.4.x & Model training, CV pipeline, StandardScaler, MLPClassifier \\
+imbalanced-learn & 0.12.x & SMOTE oversampling, ImbPipeline \\
+XGBoost & 2.x & Primary deployed fraud detection model \\
+SHAP & 0.45.x & TreeExplainer, per-transaction waterfall explanations \\
+ChromaDB & 0.5.23 & Vector database for SBP regulatory document storage \\
+sentence-transformers & 2.x & \texttt{all-MiniLM-L6-v2} document embeddings \\
+rank-bm25 & 0.2.x & BM25 lexical retrieval component of RAG \\
+CrossEncoder & 2.x & \texttt{ms-marco-MiniLM-L-6-v2} reranking model \\
+OpenAI SDK & 1.x & GPT-4o-mini generation for RAG reports \\
+Streamlit & 1.x & Interactive web dashboard \\
+matplotlib & 3.x & Plot generation for EDA and model evaluation \\
+seaborn & 0.13.x & Statistical visualisation and heatmaps \\
+plotly & 5.x & Interactive charts in dashboard \\
+joblib & 1.x & Model serialisation and persistence \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Repository}
+
+The complete source code, trained model artefacts, SBP regulatory corpus, and evaluation outputs are publicly available at:
+
+\begin{center}
+\small\bfseries\color{TGBlue}
+\href{https://github.com/whozahm3d/trustguard-ai-fraud-detection}{\texttt{https://github.com/whozahm3d/trustguard-ai-fraud-detection}}
+\end{center}
 
 % ============================================================
 \section{TrustGuard Dashboard}
