@@ -59,17 +59,17 @@ def load_rag_components(openai_api_key=None):
     global _components
     if openai_api_key:
         os.environ["OPENAI_API_KEY"] = openai_api_key
-        # Rebuild client if key changed
-        if _components:
-            _components["client"] = openai.OpenAI(
-                api_key=openai_api_key)
+        if _components:  # hot-swap key if already loaded
+            _components["client"] = openai.OpenAI(api_key=openai_api_key)
             return _components
-    elif _components:
+    elif _components:    # no new key, already loaded — reuse
         return _components
-    elif _components:
-        return _components
-    if openai_api_key:
-        os.environ["OPENAI_API_KEY"] = openai_api_key
+    # ── Cold start: load everything ──────────────────────────────────────
+    key = openai_api_key or os.environ.get("OPENAI_API_KEY", "")
+    if not key:
+        raise ValueError("OpenAI API key is required for RAG. Set it in Streamlit Secrets.")
+    # ... rest of loading logic ...
+    client = openai.OpenAI(api_key=key)
     embed_model   = SentenceTransformer(RAG_CONFIG["EMBEDDING_MODEL"])
     # Patch: clear stored embedding_function config that causes _type error
     import sqlite3 as _sqlite3
