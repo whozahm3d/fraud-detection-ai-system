@@ -7,7 +7,7 @@
 <br>
 
 <!-- Runtime & Language -->
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Python 3.10](https://img.shields.io/badge/Python-3.10-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 <!-- Framework -->
 [![Streamlit 1.45](https://img.shields.io/badge/Streamlit-1.45-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
 <!-- ML Stack -->
@@ -17,6 +17,7 @@
 <!-- Status & License -->
 [![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=flat-square)](.)
 [![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
+[![CI](https://github.com/whozahm3d/trustguard-ai-fraud-detection/actions/workflows/ci.yml/badge.svg)](https://github.com/whozahm3d/trustguard-ai-fraud-detection/actions/workflows/ci.yml)
 
 <br>
 
@@ -25,6 +26,13 @@
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
 
 <br>
+
+<!-- 🎬 DEMO GIF — record a 30s walkthrough of the dashboard and replace this block -->
+<!-- Tip: use Kap (Mac), ScreenToGif (Windows), or peek (Linux) -->
+<!-- Drag the .gif into any GitHub Issue to get a raw URL, then embed below -->
+<!--
+![TrustGuard AI Demo](https://your-gif-url-here.gif)
+-->
 
 > An end-to-end academic AI system that detects financial fraud on severely imbalanced data (0.13% fraud rate, 6.3M transactions), explains every prediction with SHAP, and grounds risk reports in State Bank of Pakistan regulations via a RAG pipeline — all accessible through a live Streamlit dashboard.
 
@@ -159,7 +167,7 @@ Raw PaySim CSV (6.36M rows)
 ### 🔍 Fraud Detection
 - Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
 - Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
-- 3-fold stratified cross-validation with SMOTE applied strictly inside each fold
+- 5-fold stratified cross-validation with SMOTE applied strictly inside each fold
 - Full ablation study across 7 conditions isolating the contribution of each pipeline component
 
 ### 🧠 Explainable AI
@@ -390,6 +398,32 @@ Retrieval: **Avg Precision@5 = 0.855** · Term Hit Rate = 0.90 · Expected doc f
 | **⑤ Ablation Study** | All 7 conditions across all metrics — bar chart, heatmap, delta plot, PR scatter |
 | **⑥ About** | Team info, architecture overview, links |
 
+### Risk Tier Thresholds
+
+| Fraud Probability | Risk Tier | Recommended Action |
+|:---|:---|:---|
+| < 30% | 🟢 LOW | Allow — log for audit |
+| 30% – 60% | 🟡 MEDIUM | Flag for manual review |
+| 60% – 85% | 🟠 HIGH | Hold pending investigation |
+| > 85% | 🔴 CRITICAL | Block + escalate immediately |
+
+### Offline Availability
+
+> ✅ **Pages ①–⑥ work fully offline** — SHAP explanations, batch scoring, EDA, model metrics, and ablation results require no internet connection. Only the RAG regulatory report on Page ① requires an active OpenAI API key and internet access.
+
+### Batch CSV Format (Page ②)
+
+Your CSV must include these exact column names (order does not matter):
+
+```csv
+step,type,amount,oldbalanceOrg,newbalanceOrig,oldbalanceDest,newbalanceDest
+1,TRANSFER,181.0,181.0,0.0,0.0,0.0
+1,CASH_OUT,9839.64,170136.0,160296.36,0.0,0.0
+1,PAYMENT,4024.36,53860.0,49835.64,0.0,0.0
+```
+
+**Valid values for `type`:** `CASH_OUT`, `TRANSFER`, `PAYMENT`, `DEBIT`, `CASH_IN`
+
 > [!NOTE]
 > The RAG regulatory report on Page 1 requires an OpenAI API key. All other pages are fully functional without one.
 
@@ -414,6 +448,14 @@ streamlit run app.py
 ```
 
 The dashboard loads the **pre-trained XGBoost model** from `outputs/deployment/model.pkl` — no data download or retraining required.
+
+**Alternatively, using Make:**
+
+```bash
+make install   # install dependencies
+make run       # launch dashboard
+make help      # see all available commands
+```
 
 ---
 
@@ -447,6 +489,13 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 
 ```bash
 pip install -r requirements.txt
+```
+
+For development (notebooks, linting, testing):
+
+```bash
+pip install -r requirements-dev.txt
+# or: make install-dev
 ```
 
 <details>
@@ -544,10 +593,13 @@ trustguard-ai-fraud-detection/
 │
 ├── app.py                              # Streamlit dashboard (6 pages, ~1600 lines)
 ├── rag_module.py                       # RAG pipeline: retrieval + reranking + generation
-├── requirements.txt                    # All dependencies with pinned versions
+├── requirements.txt                    # All runtime dependencies with pinned versions
+├── requirements-dev.txt                # Dev-only dependencies (jupyter, flake8, pytest)
+├── Makefile                            # Common commands: make install, make run, make lint
 ├── .python-version                     # Python 3.10 specifier
 ├── LICENSE                             # MIT License
 ├── CONTRIBUTING.md                     # Contribution guidelines
+├── SECURITY.md                         # Security policy and API key guidance
 │
 ├── .streamlit/
 │   ├── config.toml                     # Theme config (primary=#49B6E5), 200MB upload limit
@@ -555,6 +607,14 @@ trustguard-ai-fraud-detection/
 │
 ├── .devcontainer/
 │   └── devcontainer.json              # GitHub Codespaces / VS Code dev container config
+│
+├── .github/
+│   ├── workflows/
+│   │   └── ci.yml                     # CI: dependency install check + flake8 lint
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md              # Structured bug report form
+│   │   └── feature_request.md         # Structured feature request form
+│   └── PULL_REQUEST_TEMPLATE.md       # PR checklist template
 │
 ├── Data/
 │   ├── original_dataset/
@@ -594,7 +654,7 @@ trustguard-ai-fraud-detection/
 │   └── deliverable_2_scripts/
 │       ├── logistic_regression.py
 │       ├── random_forest.py
-│       ├── nueral_networks.py
+│       ├── neural_networks.py           # ⚠️ note: filename has typo in repo (nueral_networks.py)
 │       ├── xgboost_regression.py
 │       ├── compare_models.py
 │       ├── hyperparameter_config.py

@@ -1,47 +1,57 @@
+# Contributing to TrustGuard AI
 
-# Contributing
-
-Thank you for your interest in contributing to this project! 🚀
+Thank you for your interest in contributing! 🚀
 This repository is an academic AI system focused on **financial fraud detection using Machine Learning, Explainable AI, and Retrieval-Augmented Generation (RAG)**.
 
 ---
 
 ## 📌 How You Can Contribute
 
-You can contribute by:
-
-* Improving data preprocessing scripts
-* Optimizing machine learning models
-* Adding new fraud detection features
-* Enhancing data visualizations and exploratory analysis
-* Improving documentation
-* Fixing bugs or performance issues
-* Adding explainable AI or model interpretation modules
-* Enhancing the RAG policy retrieval system
+- Improve data preprocessing scripts or feature engineering
+- Optimise machine learning models or add new classifiers
+- Enhance XAI / model interpretability (LIME, Integrated Gradients, etc.)
+- Improve the RAG policy retrieval system (new documents, better chunking)
+- Add Docker / containerisation support
+- Improve data visualisations and EDA
+- Write unit tests for the preprocessing pipeline
+- Fix bugs or improve performance
+- Improve documentation
 
 ---
 
-## 🛠 Development Setup
+## 🛠️ Development Setup
 
-Clone the repository:
+### 1. Fork and clone
 
 ```bash
 git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
+cd trustguard-ai-fraud-detection
 ```
 
-Navigate into the project folder:
+### 2. Set up a virtual environment
 
 ```bash
-cd fraud-detection-ai-system
+python -m venv venv
+source venv/bin/activate       # Windows: venv\Scripts\activate
 ```
 
-Install dependencies:
+### 3. Install dependencies
 
 ```bash
+# Runtime dependencies
 pip install -r requirements.txt
+
+# Development dependencies (linting, notebooks, testing)
+pip install -r requirements-dev.txt
 ```
 
-Create a new branch for your feature:
+Or using Make:
+
+```bash
+make install-dev
+```
+
+### 4. Create a feature branch
 
 ```bash
 git checkout -b feature/your-feature-name
@@ -51,52 +61,69 @@ git checkout -b feature/your-feature-name
 
 ## 📋 Contribution Guidelines
 
-* Use **clear and descriptive commit messages**
-* Follow **Python coding standards**
-* Comment important parts of the code
-* Do not upload large datasets to GitHub
-* Test scripts before submitting
-* Keep the repository clean and organized
+- Use **clear and descriptive commit messages** (e.g. `feat: add LIME explanations`, `fix: handle empty CSV upload`)
+- Follow **PEP 8 Python style guidelines** — run `make lint` before submitting
+- Comment important or non-obvious logic
+- **Do not upload large dataset files** — `Data/original_dataset/` is in `.gitignore`
+- **Do not commit `.streamlit/secrets.toml`** — it contains your API key
+- Test your changes before submitting a Pull Request
+- Keep the repository clean and organised
 
 ---
 
 ## 🔍 Code Style
 
-* Follow **PEP 8 Python style guidelines**
-* Use **snake_case** for variable and function names
-* Write modular and reusable functions
-* Avoid hard-coded values in scripts
-* Add comments for complex logic
+- Follow **PEP 8** — max line length 120 characters
+- Use **snake_case** for variable and function names
+- Write modular, reusable functions with docstrings on complex logic
+- Avoid hardcoded values — use constants or config where possible
+
+Run the linter:
+
+```bash
+make lint
+# or directly:
+flake8 app.py rag_module.py scripts/ --max-line-length=120
+```
 
 ---
 
 ## 🚀 Submitting Changes
 
-After completing your changes:
-
-Push your branch:
+1. Push your branch:
 
 ```bash
 git push origin feature/your-feature-name
 ```
 
-Then open a **Pull Request** and clearly describe your changes.
+2. Open a **Pull Request** against `main`
+3. Fill in the PR template — describe what changed, why, and how you tested it
+4. A team member will review and provide feedback
 
 ---
 
 ## 🧪 Testing
 
-Before submitting contributions:
+Before submitting:
 
-* Ensure Python scripts run without errors
-* Verify preprocessing outputs are correct
-* Validate data visualizations and EDA results
-* Confirm the pipeline executes successfully
+- Ensure `streamlit run app.py` launches without errors
+- Verify the affected dashboard page(s) work as expected
+- Confirm notebooks run end-to-end if you modified them
+- Run `make lint` and resolve any errors
+
+---
+
+## ⚠️ Security Reminders
+
+- Never commit `.streamlit/secrets.toml`
+- Never hardcode API keys, passwords, or credentials in source files
+- Never commit large dataset files from `Data/original_dataset/`
+- See [SECURITY.md](SECURITY.md) for the full security policy
 
 ---
 
 ## 📄 License
 
-By contributing to this repository, you agree that your contributions will be licensed under the project's license.
+By contributing to this repository, you agree that your contributions will be licensed under the project's [MIT License](LICENSE).
 
-Thank you for helping improve this project! 🙌
+Thank you for helping improve TrustGuard AI! 🙌
