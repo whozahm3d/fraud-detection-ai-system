@@ -26,7 +26,7 @@ You can contribute by:
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/fraud-detection-ai-system.git
+git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
 ```
 
 Navigate into the project folder:
