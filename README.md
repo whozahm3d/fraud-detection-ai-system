@@ -2,23 +2,36 @@
 
 # 🛡️ TrustGuard AI
 ### AI-Powered Fraud Detection for Digital Banking
-#### with Explainable AI & RAG-Based Policy Assistance
-
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.45-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![XGBoost](https://img.shields.io/badge/XGBoost-2.1-006400?style=for-the-badge)](https://xgboost.readthedocs.io)
-[![SHAP](https://img.shields.io/badge/XAI-SHAP-orange?style=for-the-badge)](https://shap.readthedocs.io)
-[![RAG](https://img.shields.io/badge/RAG-ChromaDB%20%2B%20GPT--4o--mini-7B68EE?style=for-the-badge)](https://www.trychroma.com)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=for-the-badge)](.)
+#### Explainable AI · RAG-Based Policy Assistance · Live Streamlit Dashboard
 
 <br>
 
-**🚀 Live Demo →** [trustguard-ai-fraud-detection.streamlit.app](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+<!-- Runtime & Language -->
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+<!-- Framework -->
+[![Streamlit 1.45](https://img.shields.io/badge/Streamlit-1.45-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
+<!-- ML Stack -->
+[![XGBoost](https://img.shields.io/badge/XGBoost-2.1-006400?style=flat-square)](https://xgboost.readthedocs.io)
+[![SHAP](https://img.shields.io/badge/XAI-SHAP-FF6F00?style=flat-square)](https://shap.readthedocs.io)
+[![RAG](https://img.shields.io/badge/RAG-ChromaDB%20+%20GPT--4o--mini-7B68EE?style=flat-square)](https://www.trychroma.com)
+<!-- Status & License -->
+[![Status](https://img.shields.io/badge/Status-Academic%20Project-blueviolet?style=flat-square)](.)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
+
+<br>
+
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+&nbsp;&nbsp;
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
 
 <br>
 
 > An end-to-end academic AI system that detects financial fraud on severely imbalanced data (0.13% fraud rate, 6.3M transactions), explains every prediction with SHAP, and grounds risk reports in State Bank of Pakistan regulations via a RAG pipeline — all accessible through a live Streamlit dashboard.
+
+<br>
+
+> [!NOTE]
+> **Academic Project** — Built at FAST-NUCES Lahore (Spring 2026). The PaySim dataset is synthetic. Results have **not** been validated on real-world production transaction data and should not be used in any live financial system without further validation.
 
 </div>
 
@@ -32,13 +45,29 @@
 |:---|:---:|
 | **AUC-ROC** | **0.9995** |
 | **Recall** | **0.9976** |
-| **Avg Precision** | **0.9358** |
+| **Avg Precision (AP)** | **0.9358** |
 | **F1 Score** | **0.5691** |
 | **Test Accuracy** | **99.80%** |
+| **Inference Speed** | **< 50ms / transaction (CPU)** |
 | RAG Hallucinations | **0 / 4** |
 | Fraud cases caught (6.3M test set) | **8,190 / 8,213** |
 
 </div>
+
+---
+
+## 🧭 How It Works — 60-Second Overview
+
+```
+① INPUT          ② PREDICT            ③ EXPLAIN           ④ RETRIEVE           ⑤ REPORT
+─────────        ─────────────         ─────────────        ─────────────        ──────────────
+Transaction  →   XGBoost model    →   SHAP waterfall   →   ChromaDB + BM25  →   GPT-4o-mini
+attributes        (12 features)        per-feature          hybrid retrieval      regulatory
+(amount,          AUC-ROC=0.9995      contribution         from SBP corpus       risk report
+ type, bal.)      < 50ms latency       plot + tier          CrossEncoder          grounded,
+                                       (LOW/MED/HIGH/       reranking             0 hallucinations
+                                        CRITICAL)
+```
 
 ---
 
@@ -49,17 +78,16 @@
 - [Features](#-features)
 - [Dataset](#-dataset)
 - [Methodology](#-methodology)
-  - [Class Imbalance Handling](#class-imbalance-handling)
-  - [Feature Engineering](#feature-engineering)
-  - [Models Trained](#models-trained)
-  - [XAI — SHAP Explanations](#xai--shap-explanations)
-  - [RAG Pipeline](#rag-pipeline)
 - [Results](#-results)
 - [Live Dashboard](#-live-dashboard)
 - [Quick Start](#-quick-start)
 - [Full Setup Guide](#-full-setup-guide)
 - [Project Structure](#-project-structure)
+- [Known Limitations](#-known-limitations)
+- [Troubleshooting](#-troubleshooting)
 - [Academic Context](#-academic-context)
+- [How to Cite](#-how-to-cite)
+- [Contributing](#-contributing)
 - [Team](#-team)
 - [References](#-references)
 
@@ -71,13 +99,11 @@ Financial fraud causes trillions of dollars in annual losses globally. Detecting
 
 **TrustGuard AI** solves this through three integrated components:
 
-1. **Fraud Detection Engine** — A two-stage imbalance pipeline (Fraud Simulation + SMOTE) trains four ML models under identical conditions. XGBoost is deployed with AUC-ROC = 0.9995 and Recall = 0.9976.
+1. **Fraud Detection Engine** — A two-stage imbalance pipeline (Fraud Simulation → SMOTE) trains four ML models under identical conditions. XGBoost is deployed with AUC-ROC = 0.9995 and Recall = 0.9976.
 
 2. **Explainable AI (XAI)** — SHAP TreeExplainer generates per-transaction waterfall explanations, showing exactly which features drove each prediction and by how much.
 
 3. **RAG Policy Assistant** — A hybrid retrieval system (BM25 + dense vectors + CrossEncoder reranking) retrieves relevant SBP regulatory provisions and feeds them to GPT-4o-mini, generating grounded regulatory risk reports with zero hallucinations.
-
-> **Academic note:** This is a thirs-year university AI course project built on the PaySim synthetic dataset. Results are strong but not validated on real-world production transaction data.
 
 ---
 
@@ -133,25 +159,25 @@ Raw PaySim CSV (6.36M rows)
 ### 🔍 Fraud Detection
 - Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
 - Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
-- 3-fold cross-validation with SMOTE applied strictly inside each fold
+- 5-fold stratified cross-validation with SMOTE applied strictly inside each fold
 - Full ablation study across 7 conditions isolating the contribution of each pipeline component
 
 ### 🧠 Explainable AI
-- **SHAP TreeExplainer** for per-transaction waterfall plots
+- **SHAP TreeExplainer** for per-transaction waterfall plots (< 50ms, CPU)
 - Feature importance comparison across all 4 models
 - Bias & fairness check across transaction type subgroups
 - Threshold optimisation curve showing precision/recall trade-offs
 
 ### 📜 RAG Policy Assistant
 - **Hybrid retrieval**: BM25 (lexical) + sentence-transformers (semantic) combined
-- **CrossEncoder reranking** (ms-marco-MiniLM-L-6-v2) for passage quality scoring
+- **CrossEncoder reranking** (`ms-marco-MiniLM-L-6-v2`) for passage quality scoring
 - **GPT-4o-mini** generation grounded in SBP regulatory documents
 - Zero hallucinations across all evaluated transactions
-- Average retrieval Precision = 0.855 across 10 regulatory queries
+- Average retrieval Precision@5 = 0.855 across 10 regulatory queries
 
 ### 📊 Interactive Dashboard
 - Single transaction prediction with real-time SHAP explanation
-- Batch CSV upload and scoring
+- Batch CSV upload and scoring (up to 200MB)
 - Full EDA visualisation suite
 - Model comparison, confusion matrices, ROC/PR curves
 - Ablation study explorer
@@ -175,7 +201,8 @@ A multi-agent simulation calibrated against real mobile money transaction data f
 | Fraud types | CASH_OUT and TRANSFER **only** |
 | Missing values | None |
 
-> ⚠️ The raw dataset (~500MB) is not included. Download from Kaggle and place at `Data/original_dataset/` or use the dataset link provided above.
+> [!NOTE]
+> The raw dataset (~500MB) is not included in this repository. Download from Kaggle and place it at `Data/original_dataset/`. The pre-trained model in `outputs/deployment/` works without it.
 
 ---
 
@@ -255,12 +282,15 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 
 | Component | Technology |
 |:---|:---|
-| Vector store | ChromaDB (`~100 chunks`) |
+| Vector store | ChromaDB (`~100 chunks`, pre-built in `chroma_db/`) |
 | Embedding model | `sentence-transformers/all-MiniLM-L6-v2` (384-dim) |
-| Lexical retrieval | BM25 (rank-bm25) |
+| Lexical retrieval | BM25 (`rank-bm25`) |
 | Reranker | `ms-marco-MiniLM-L-6-v2` CrossEncoder |
 | Generator | `gpt-4o-mini` (OpenAI) |
-| Regulatory corpus | 5 SBP documents (C1-Annex, C2-Annex-A, CL33-Annex-B, C10-Branchless-Banking, SME-PRs-Jan-2025) |
+| Regulatory corpus | 5 SBP PDFs (C1-Annex, C2-Annex-A, CL33-Annex-B, C10-Branchless-Banking, SME-PRs-Jan-2025) |
+
+> [!NOTE]
+> The ChromaDB vector store is pre-built and included in `chroma_db/`. You do **not** need to rebuild it unless you add new documents to the corpus.
 
 ---
 
@@ -274,6 +304,15 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 | Random Forest | 0.1035 | 0.9976 | 0.1875 | 0.9995 | 0.8870 |
 | Neural Network | 0.1437 | 0.9732 | 0.2505 | 0.9983 | 0.7081 |
 | Logistic Regression | 0.0217 | 0.9860 | 0.0425 | 0.9946 | 0.5567 |
+
+### Cross-Validation — All 4 Models (5-fold, mean ± std)
+
+| Model | CV Precision | CV Recall | CV F1 | CV AUC-ROC | CV Avg Prec |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| **XGBoost** ⭐ | 0.905 ± 0.035 | 1.000 ± 0.000 | **0.949 ± 0.020** | 1.000 ± 0.000 | 0.985 ± 0.004 |
+| Random Forest | 0.553 ± 0.009 | 0.995 ± 0.001 | 0.711 ± 0.007 | 0.999 ± 0.000 | 0.934 ± 0.002 |
+| Neural Network | 0.667 ± 0.089 | 0.990 ± 0.005 | 0.793 ± 0.061 | 0.999 ± 0.000 | 0.969 ± 0.003 |
+| Logistic Regression | 0.142 ± 0.002 | 0.997 ± 0.001 | 0.249 ± 0.003 | 0.977 ± 0.001 | 0.337 ± 0.006 |
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/model_comparison_all_metrics.png" width="85%" alt="Model Comparison — All Metrics"/>
@@ -294,13 +333,19 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 <br><em>Confusion matrices for all four models on the held-out test set</em>
 </div>
 
-### Cross-Validation — XGBoost (5-fold, mean ± std)
+### Cost-Benefit Analysis
 
-| CV Precision | CV Recall | CV F1 | CV AUC-ROC | CV Avg Precision |
-|:---:|:---:|:---:|:---:|:---:|
-| 0.905 ± 0.035 | 1.000 ± 0.000 | 0.949 ± 0.020 | 1.000 ± 0.000 | 0.985 ± 0.004 |
+<div align="center">
+<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/cost_benefit_analysis.png" width="85%" alt="Cost-Benefit Analysis"/>
+<br><em>Cost-benefit analysis across decision thresholds</em>
+</div>
 
 ### Ablation Study — All 7 Conditions
+
+<details>
+<summary><strong>📊 Click to expand full ablation results table</strong></summary>
+
+<br>
 
 | ID | Condition | CV F1 | Test Recall | Test F1 | Test AP |
 |:---|:---|:---:|:---:|:---:|:---:|
@@ -312,14 +357,12 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 | C1 | No Engineered Features | 0.636 | 0.9976 | 0.1538 | 0.6061 |
 | **C2** | **With Features** ⭐ | **0.947** | **0.9976** | **0.5533** | **0.7317** |
 
-> Removing engineered features (C1) drops Test F1 by **73%**. Removing Fraud Simulation (A1) drops CV F1 by **29%**. Both are critical.
+</details>
 
-### Cost-Benefit Analysis
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/whozahm3d/trustguard-ai-fraud-detection/main/Images/final_deliverable_images/cost_benefit_analysis.png" width="85%" alt="Cost-Benefit Analysis"/>
-<br><em>Cost-benefit analysis across decision thresholds</em>
-</div>
+**Key findings:**
+- Removing engineered features (C1) drops Test F1 by **73%** — the single most critical component
+- Removing Fraud Simulation (A1) drops CV F1 by **29%** — SMOTE alone is insufficient at 0.13% fraud rate
+- SMOTE ratio=0.3 (B2) slightly outperforms 0.5 (B3) on Test AP
 
 ### RAG Evaluation
 
@@ -330,7 +373,7 @@ SHAP `TreeExplainer` decomposes each prediction into per-feature additive contri
 | TXN-HIGH-002 | 88% | 🔴 CRITICAL | 3.40s | ✅ None |
 | TXN-MEDIUM-001 | 73% | 🟠 HIGH | 3.64s | ✅ None |
 
-Retrieval: **Avg Precision@5 = 0.855**, Term Hit Rate = 0.90, Expected doc found: **10/10**
+Retrieval: **Avg Precision@5 = 0.855** · Term Hit Rate = 0.90 · Expected doc found: **10/10**
 
 ---
 
@@ -338,18 +381,17 @@ Retrieval: **Avg Precision@5 = 0.855**, Term Hit Rate = 0.90, Expected doc found
 
 **URL:** [https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
 
-The dashboard has **6 pages**, navigated from the sidebar:
-
 | Page | What it does |
 |:---|:---|
-| **① Predict Transaction** | Enter transaction attributes → get fraud probability, risk tier, SHAP waterfall plot, and (with API key) a RAG regulatory report |
-| **② Batch CSV Analysis** | Upload a CSV of transactions → score all rows, download results |
-| **③ Dataset & Imbalance** | Interactive EDA: class distribution, fraud patterns, feature distributions, imbalance pipeline visualisation |
+| **① Predict Transaction** | Enter transaction attributes → fraud probability, risk tier, SHAP waterfall, RAG regulatory report |
+| **② Batch CSV Analysis** | Upload a CSV (up to 200MB) → score all rows, download results |
+| **③ Dataset & Imbalance** | Interactive EDA: class distribution, fraud patterns, imbalance pipeline visualisation |
 | **④ Model Performance** | ROC/PR curves, confusion matrices, threshold optimisation, cost-benefit analysis, bias check |
 | **⑤ Ablation Study** | All 7 conditions across all metrics — bar chart, heatmap, delta plot, PR scatter |
 | **⑥ About** | Team info, architecture overview, links |
 
-> ⚠️ The RAG regulatory report on Page 1 requires an OpenAI API key. All other pages work without one.
+> [!NOTE]
+> The RAG regulatory report on Page 1 requires an OpenAI API key. All other pages are fully functional without one.
 
 ---
 
@@ -360,14 +402,18 @@ The dashboard has **6 pages**, navigated from the sidebar:
 git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
 cd trustguard-ai-fraud-detection
 
-# 2. Install dependencies
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 3. Launch the dashboard
+# 4. Launch
 streamlit run app.py
 ```
 
-The dashboard loads the **pre-trained XGBoost model** from `outputs/deployment/model.pkl` — no data or retraining required.
+The dashboard loads the **pre-trained XGBoost model** from `outputs/deployment/model.pkl` — no data download or retraining required.
 
 ---
 
@@ -386,14 +432,27 @@ git clone https://github.com/whozahm3d/trustguard-ai-fraud-detection.git
 cd trustguard-ai-fraud-detection
 ```
 
-### 2. Install Dependencies
+Or open instantly in a zero-setup cloud environment:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
+
+### 2. Set Up a Virtual Environment
+
+```bash
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+```
+
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
 <details>
-<summary>Core dependencies (click to expand)</summary>
+<summary><strong>📦 Full dependency list (click to expand)</strong></summary>
+
+<br>
 
 | Package | Version | Purpose |
 |:---|:---|:---|
@@ -414,16 +473,19 @@ pip install -r requirements.txt
 | `joblib` | 1.4.2 | Model serialisation |
 | `psutil` | 6.1.1 | System resource monitoring |
 | `tqdm` | 4.66.4 | Progress bars |
+| `protobuf` | <6 | ChromaDB compatibility |
+| `rich` | <14 | Streamlit compatibility |
 
 </details>
 
-### 3. Configure OpenAI API Key (Optional — RAG only)
+### 4. Configure OpenAI API Key (Optional — RAG only)
 
-Copy the secrets template and add your key:
+> [!WARNING]
+> **Never commit `.streamlit/secrets.toml`** — it contains your OpenAI API key. The file is already in `.gitignore`. Always use `secrets.example.toml` as your template.
 
 ```bash
 cp .streamlit/secrets.example.toml .streamlit/secrets.toml
-# Edit secrets.toml and replace sk-proj-YOUR_KEY_HERE with your actual key
+# Open secrets.toml and replace sk-proj-YOUR_KEY_HERE with your actual key
 ```
 
 Or set it as an environment variable:
@@ -432,11 +494,12 @@ Or set it as an environment variable:
 export OPENAI_API_KEY="sk-proj-your-key-here"
 ```
 
-> Without this key, all dashboard pages except the RAG report on Page 1 work normally.
+**For Streamlit Cloud deployment:** go to **App Settings → Secrets** and paste the contents of your `secrets.toml`.
 
-### 4. Download the Dataset (for retraining only)
+### 5. Download the Dataset (Retraining Only)
 
-The pre-trained model is already included in `outputs/deployment/`. If you want to retrain from scratch:
+> [!NOTE]
+> The pre-trained model is already included in `outputs/deployment/`. **Skip this step** unless you want to retrain from scratch.
 
 1. Download from [Kaggle — PaySim](https://www.kaggle.com/datasets/ealaxi/paysim1)
 2. Place the CSV at `Data/original_dataset/`
@@ -446,15 +509,14 @@ The pre-trained model is already included in `outputs/deployment/`. If you want 
 jupyter notebook notebooks/final_deliverable_notebooks/trustguard_ai_final.ipynb
 ```
 
-### 5. Run the Dashboard
+### 6. Run the Dashboard
 
 ```bash
 streamlit run app.py
+# Opens at http://localhost:8501
 ```
 
-Opens at `http://localhost:8501`
-
-### 6. Run Individual Notebooks
+### 7. Run Individual Notebooks
 
 ```bash
 # EDA and preprocessing (Deliverable 1)
@@ -483,20 +545,20 @@ trustguard-ai-fraud-detection/
 ├── app.py                              # Streamlit dashboard (6 pages, ~1600 lines)
 ├── rag_module.py                       # RAG pipeline: retrieval + reranking + generation
 ├── requirements.txt                    # All dependencies with pinned versions
-├── .python-version                     # Python 3.10+ specifier
+├── .python-version                     # Python 3.10 specifier
 ├── LICENSE                             # MIT License
 ├── CONTRIBUTING.md                     # Contribution guidelines
 │
 ├── .streamlit/
-│   ├── config.toml                     # Streamlit theme config
-│   └── secrets.example.toml           # API key template (never commit secrets.toml)
+│   ├── config.toml                     # Theme config (primary=#49B6E5), 200MB upload limit
+│   └── secrets.example.toml           # API key template — copy to secrets.toml (never commit)
 │
 ├── .devcontainer/
 │   └── devcontainer.json              # GitHub Codespaces / VS Code dev container config
 │
 ├── Data/
 │   ├── original_dataset/
-│   │   └── Paysim_dataset             # Raw PaySim CSV placeholder (not included — download from Kaggle)
+│   │   └── Paysim_dataset             # Raw PaySim CSV (not included — download from Kaggle)
 │   └── processed_data/
 │       ├── processed_paysim           # Cleaned + feature-engineered dataset
 │       ├── train_original             # Pre-SMOTE training split
@@ -516,7 +578,7 @@ trustguard-ai-fraud-detection/
 │       └── deployment.ipynb                     # Model export + dashboard prep
 │
 ├── scripts/
-│   ├── deliverable_1_scripts/          # Modular preprocessing scripts
+│   ├── deliverable_1_scripts/
 │   │   ├── load_dataset.py
 │   │   ├── basic_inspection.py
 │   │   ├── data_cleaning.py
@@ -529,7 +591,7 @@ trustguard-ai-fraud-detection/
 │   │   ├── save_cleaned_dataset.py
 │   │   ├── libraries_loaded.py
 │   │   └── eda_analysis_and_visualization.py
-│   └── deliverable_2_scripts/          # Model training & evaluation scripts
+│   └── deliverable_2_scripts/
 │       ├── logistic_regression.py
 │       ├── random_forest.py
 │       ├── nueral_networks.py
@@ -545,7 +607,7 @@ trustguard-ai-fraud-detection/
 │       └── ablation_study.py
 │
 ├── outputs/
-│   ├── deployment/                     # Artefacts loaded by app.py at runtime
+│   ├── deployment/                     # ⬅ Loaded by app.py at runtime — required
 │   │   ├── model.pkl                  # Trained XGBoost model
 │   │   ├── scaler.pkl                 # Fitted StandardScaler
 │   │   ├── model_meta.json            # Model metadata + test metrics
@@ -557,15 +619,11 @@ trustguard-ai-fraud-detection/
 │   │   ├── random_forest.pkl
 │   │   ├── xgboost.pkl
 │   │   └── scaler.pkl
-│   ├── metrics/                        # Per-model metrics JSON + CSV
-│   │   ├── model_comparison.json      # All 4 models, CV + test metrics
-│   │   ├── model_comparison.csv
+│   ├── metrics/
+│   │   ├── model_comparison.{json,csv}
 │   │   ├── hyperparameter_table.csv
-│   │   ├── logistic_regression_metrics.{json,csv}
-│   │   ├── neural_network_metrics.{json,csv}
-│   │   ├── random_forest_metrics.{json,csv}
-│   │   └── xgboost_metrics.{json,csv}
-│   ├── ablation/                       # Ablation study results + plots
+│   │   └── {model}_metrics.{json,csv}  # Per-model metrics (4 models × 2 formats)
+│   ├── ablation/
 │   │   ├── ablation_results.csv
 │   │   ├── ablation_study.png
 │   │   ├── ablation_heatmap.png
@@ -573,10 +631,10 @@ trustguard-ai-fraud-detection/
 │   │   ├── ablation_pr_scatter.png
 │   │   └── ablation_smote_trend.png
 │   ├── plots/                          # Full set of EDA, model, and evaluation plots
-│   ├── experiments/                    # Raw experiment logs
+│   ├── experiments/
 │   │   ├── experiment_results.csv
 │   │   └── cleaned_experiment_results.csv
-│   └── rag/                            # RAG evaluation outputs
+│   └── rag/
 │       ├── retrieval_evaluation.csv
 │       ├── response_evaluation.csv
 │       ├── TXN-CRITICAL-001.txt
@@ -587,24 +645,95 @@ trustguard-ai-fraud-detection/
 ├── Images/
 │   ├── Deliverable_1_images/           # EDA & preprocessing plots
 │   ├── deliverable_2_images/           # Model training & evaluation plots
-│   └── final_deliverable_images/       # Full final report plots (used in README)
+│   └── final_deliverable_images/       # Final report plots (used in this README)
 │
 ├── SBP_Documents/                      # State Bank of Pakistan regulatory PDFs
-│   ├── C1-Annex.pdf                   # AML/CFT regulations
-│   ├── C2-Annex-A.pdf                 # Customer Due Diligence
-│   ├── CL33-Annex-B.pdf               # Reporting obligations
+│   ├── C1-Annex.pdf
+│   ├── C2-Annex-A.pdf
+│   ├── CL33-Annex-B.pdf
 │   ├── C10-Branchless-Banking-Regulations.pdf
 │   └── SME-PRs-Updtd-Jan-2025.pdf
 │
-├── chroma_db/                          # Pre-built ChromaDB vector store (SBP chunks)
+├── chroma_db/                          # Pre-built ChromaDB vector store (no rebuild needed)
 │   └── chroma.sqlite3
 │
 └── reports/
     ├── Fraud_Detection_Deliverable 1_Report.pdf
     ├── Fraud_Detection_Deliverable_2_Report.pdf
     ├── Fraud_Detection_Final_Report.pdf
-    └── Fraud_Detection_Final_Report.tex   # LaTeX source for final report
+    └── Fraud_Detection_Final_Report.tex   # LaTeX source
 ```
+
+---
+
+## ⚠️ Known Limitations
+
+This is an academic prototype. Understand these constraints before drawing any production conclusions:
+
+| Limitation | Detail |
+|:---|:---|
+| **Synthetic data only** | PaySim is calibrated against real data but is not real. Fraud patterns in production are more diverse and adversarial. |
+| **Low precision at default threshold** | XGBoost Test Precision = 0.40 — for every 10 flagged transactions, ~6 are false positives. Threshold tuning is required for any real deployment. |
+| **RAG latency** | Average report generation takes 4–6 seconds. Not suitable for real-time inline transaction blocking. |
+| **No authentication** | The Streamlit dashboard has no login or access control. Do not deploy publicly with live API keys embedded. |
+| **File-based vector store** | ChromaDB in this project does not scale to concurrent users. A production RAG system would use a managed vector DB (Pinecone, Weaviate, etc.). |
+| **Partial SBP corpus** | Only 5 SBP documents are indexed. Regulatory coverage is incomplete. |
+| **No concept drift handling** | No retraining pipeline exists. Fraud patterns shift over time; production systems require ongoing monitoring and retraining. |
+
+---
+
+## 🔧 Troubleshooting
+
+<details>
+<summary><strong>❌ <code>chromadb</code> installation fails on Windows</strong></summary>
+
+ChromaDB requires C++ build tools on Windows:
+
+1. Download [Visual C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+2. During install, select **"Desktop development with C++"**
+3. Re-run `pip install -r requirements.txt`
+
+Alternatively, use [GitHub Codespaces](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection) for a zero-setup Linux environment.
+
+</details>
+
+<details>
+<summary><strong>❌ <code>shap</code> version conflict with scikit-learn</strong></summary>
+
+The `requirements.txt` pins `shap>=0.45.0,<0.48.0` for compatibility with `scikit-learn==1.5.2`. If you encounter a conflict, force the correct versions:
+
+```bash
+pip install "shap>=0.45.0,<0.48.0" "scikit-learn==1.5.2"
+```
+
+</details>
+
+<details>
+<summary><strong>❌ <code>FileNotFoundError: outputs/deployment/model.pkl</code></strong></summary>
+
+The pre-trained model is included in the repository. If it is missing, re-clone the repo, or retrain by running:
+
+```bash
+jupyter notebook notebooks/final_deliverable_notebooks/deployment.ipynb
+```
+
+</details>
+
+<details>
+<summary><strong>❌ RAG report not generating / OpenAI error</strong></summary>
+
+1. Confirm your OpenAI API key is set in `.streamlit/secrets.toml` or as `OPENAI_API_KEY` in your environment.
+2. Verify the key is valid and has available credits at [platform.openai.com](https://platform.openai.com).
+3. If you see a `RateLimitError`, wait a moment and retry.
+
+</details>
+
+<details>
+<summary><strong>❌ Batch CSV upload fails or times out</strong></summary>
+
+The dashboard supports CSVs up to **200MB** (configured in `.streamlit/config.toml`). For larger files, split into chunks and upload separately. Ensure column names match those in the training data.
+
+</details>
 
 ---
 
@@ -616,15 +745,57 @@ This project was developed as the final deliverable for the **Artificial Intelli
 > Department of Data Science & Artificial Intelligence — Lahore Campus
 > Spring 2026 | Instructor: **Hajra Waheed**
 
-It spans three deliverables:
-
 | Deliverable | Scope |
 |:---|:---|
 | **Deliverable 1** | Dataset acquisition, preprocessing pipeline, EDA (8 visualisations) |
 | **Deliverable 2** | Feature engineering, model training, class imbalance handling, evaluation |
 | **Deliverable 3** | Ablation study, XAI (SHAP), RAG pipeline, Streamlit deployment |
 
-**Important:** This is an academic prototype. The PaySim dataset is synthetic. Results have not been validated on real production transaction data and should not be used as-is in any financial system.
+---
+
+## 📖 How to Cite
+
+If you reference this project in academic work, please cite it as:
+
+```bibtex
+@misc{trustguard2026,
+  title     = {TrustGuard AI: Fraud Detection with Explainable AI and RAG-Based Policy Assistance},
+  author    = {Nawaz, Taha and Ahmad, Ali and Imran, Shahzeb},
+  year      = {2026},
+  school    = {National University of Computer \& Emerging Sciences (FAST-NUCES), Lahore},
+  note      = {Final-year AI course project, Spring 2026},
+  url       = {https://github.com/whozahm3d/trustguard-ai-fraud-detection}
+}
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
+
+**Quick guide:**
+
+```bash
+# 1. Fork the repo and create your branch
+git checkout -b feature/your-feature-name
+
+# 2. Make your changes and commit
+git commit -m "feat: describe your change"
+
+# 3. Push and open a Pull Request
+git push origin feature/your-feature-name
+```
+
+**Areas where contributions are especially welcome:**
+- Additional regulatory document ingestion (FATF, Basel III)
+- Docker / containerisation setup
+- Unit tests for the preprocessing pipeline
+- Additional XAI methods (LIME, Integrated Gradients)
+- Real-time streaming inference optimisation
+
+> [!WARNING]
+> Do not commit large data files (`Data/original_dataset/`) or your secrets file (`.streamlit/secrets.toml`). Both are already in `.gitignore`.
 
 ---
 
@@ -650,15 +821,21 @@ This project is licensed under the [MIT License](LICENSE). Academic use, learnin
 - Chawla, N.V. et al. (2002). *SMOTE: Synthetic Minority Over-sampling Technique.* JAIR, 16, 321–357.
 - Chen, T. & Guestrin, C. (2016). *XGBoost: A Scalable Tree Boosting System.* KDD 2016.
 - Lundberg, S.M. & Lee, S.-I. (2017). *A Unified Approach to Interpreting Model Predictions.* NeurIPS 30.
+- Robertson, S. & Zaragoza, H. (2009). *The Probabilistic Relevance Framework: BM25 and Beyond.* Foundations and Trends in Information Retrieval.
 - State Bank of Pakistan. (2023–2025). *AML/CFT Regulations, Branchless Banking Regulations, SME Payment Regulations.* [sbp.org.pk](https://www.sbp.org.pk)
 
 ---
 
 <div align="center">
 
-**🛡️ TrustGuard AI** — Built with purpose, explained with transparency, grounded in regulation.
+**🛡️ TrustGuard AI** — Built with purpose. Explained with transparency. Grounded in regulation.
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Click%20Here-FF4B4B?style=for-the-badge)](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-whozahm3d-181717?style=for-the-badge&logo=github)](https://github.com/whozahm3d/trustguard-ai-fraud-detection)
+<br>
+
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-c7um3xntqvxthahgld5ucm.streamlit.app/)
+&nbsp;&nbsp;
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
+&nbsp;&nbsp;
+[![GitHub Stars](https://img.shields.io/github/stars/whozahm3d/trustguard-ai-fraud-detection?style=social)](https://github.com/whozahm3d/trustguard-ai-fraud-detection)
 
 </div>
