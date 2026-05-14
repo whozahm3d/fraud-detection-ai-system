@@ -167,7 +167,7 @@ Raw PaySim CSV (6.36M rows)
 ### 🔍 Fraud Detection
 - Trains **4 models** (Logistic Regression, Random Forest, Neural Network, XGBoost) under identical pipeline conditions
 - Two-stage imbalance handling raises training fraud rate from **0.13% → 23.07%** without data leakage
-- 5-fold stratified cross-validation with SMOTE applied strictly inside each fold
+- 3-fold stratified cross-validation with SMOTE applied strictly inside each fold
 - Full ablation study across 7 conditions isolating the contribution of each pipeline component
 
 ### 🧠 Explainable AI
