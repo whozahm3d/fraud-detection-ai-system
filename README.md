@@ -21,7 +21,7 @@
 
 <br>
 
-[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-ddgpfk4kvc87d4bsegcatq.streamlit.app/)
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-ddgpfk4kvc87d4bsegcatq.streamlit.app)
 &nbsp;&nbsp;
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
 
@@ -892,7 +892,7 @@ This project is licensed under the [MIT License](LICENSE). Academic use, learnin
 
 <br>
 
-[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-ddgpfk4kvc87d4bsegcatq.streamlit.app/)
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://trustguard-ai-fraud-detection-ddgpfk4kvc87d4bsegcatq.streamlit.app)
 &nbsp;&nbsp;
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/whozahm3d/trustguard-ai-fraud-detection)
 &nbsp;&nbsp;
